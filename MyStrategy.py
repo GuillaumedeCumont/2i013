@@ -8,6 +8,7 @@ class RandomStrategy(Strategy):
         Strategy.__init__(self, "Random")
 
     def compute_strategy(self, state, id_team, id_player):
+        
         if(id_team == 2):
             position_but = Vector2D(0,GAME_HEIGHT/2.)
         if(id_team == 1):
@@ -17,18 +18,21 @@ class RandomStrategy(Strategy):
         vecteur_shoot = None
         
         if((state.player_state(id_team,id_player).position - state.ball.position).norm < PLAYER_RADIUS + BALL_RADIUS):
-            vecteur_shoot = position_but - state.ball.position
-        
+            if((position_but-state.ball.position).norm < GAME_WIDTH/5):
+                vecteur_shoot = (position_but - state.ball.position)
+            else:
+                vecteur_shoot = (position_but-state.ball.position) #A changer
         return SoccerAction(vecteur_acceleration,vecteur_shoot)
     
     
 # Create teams
 team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
-
 # Add players
-team1.add("Random", Strategy())  # Random strategy
-team2.add("Static", RandomStrategy())   # Static strategy
+team1.add("Zlatan", RandomStrategy())
+team1.add("Mbappé", RandomStrategy())  
+team2.add("Static", RandomStrategy())   
+team2.add("Static", RandomStrategy())
 
 # Create a match
 simu = Simulation(team1, team2)
