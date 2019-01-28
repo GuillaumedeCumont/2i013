@@ -31,7 +31,7 @@ class SuperState(object):
         elif(self.id_team == 1):
             position_but = Vector2D(GAME_WIDTH,GAME_HEIGHT/2.)
         return position_but
-    
+        
     @property
     def but_allie(self):
         if(self.id_team == 1):
@@ -39,8 +39,16 @@ class SuperState(object):
         elif(self.id_team == 2):
             position_but = Vector2D(GAME_WIDTH,GAME_HEIGHT/2.)
         return position_but
-
+    
+    @property
+    def distance_but_ennemi(self):
+        """distance du but
+            utile pour augmenter sa puissance si proche du but"""
+        return (self.but-self.player).norm
+    
     def aller_vers(self, Vecteur):
+        if((Vecteur - self.player).norm < PLAYER_RADIUS):
+            return None
         return (Vecteur - self.player).normalize()
     
     @property
@@ -56,6 +64,13 @@ class SuperState(object):
         vecteur_shoot = None
         if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
                 vecteur_shoot = ((self.but-self.ball).normalize())
+        return vecteur_shoot
+    
+    @property
+    def tire_au_but_si_peut_tirer_violent(self):
+        vecteur_shoot = None
+        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.but-self.ball).normalize())*1000
         return vecteur_shoot
     
     @property
@@ -126,7 +141,5 @@ class SuperState(object):
                 position = i
         return position
     
-    
-    @property
     
     

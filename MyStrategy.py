@@ -10,9 +10,16 @@ class GoStrategy(Strategy):
     def compute_strategy(self, state, id_team, id_player):
         s = SuperState(state, id_team, id_player)
         print(s.joueur_ennemi_le_plus_proche)
+        
         if(id_player == 0):
-            return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer)
-        if (id_player == 1):
+            if(s.distance_but_ennemi < GAME_HEIGHT/3.20):
+                return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer_violent)
+            else:
+                return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer)
+        if(id_player == 1):
+            """if(s.ball > GAME_WIDTH/2,GAME_HEIGHT/2):
+                return SoccerAction(s.aller_vers_but_allie,None)
+            else:"""
             return SoccerAction(s.aller_vers_but_allie,None)
         
     
@@ -23,8 +30,8 @@ team2 = SoccerTeam(name="Team 2")
 # Add players
 team1.add("Zlatan", GoStrategy())
 team1.add("Mbappé", GoStrategy())  
-team2.add("Static", Strategy())   
-team2.add("Static", Strategy())
+team2.add("Static", GoStrategy())   
+team2.add("Static", GoStrategy())
 
 # Create a match
 simu = Simulation(team1, team2)
