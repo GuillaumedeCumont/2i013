@@ -9,31 +9,22 @@ class GoStrategy(Strategy):
 
     def compute_strategy(self, state, id_team, id_player):
         s = SuperState(state, id_team, id_player)
-        if(id_team == 2):
-            position_but = Vector2D(0,GAME_HEIGHT/2.)
-        if(id_team == 1):
-            position_but = Vector2D(GAME_WIDTH,GAME_HEIGHT/2.)
+        print(s.joueur_ennemi_le_plus_proche)
+        if(id_player == 0):
+            return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer)
+        if (id_player == 1):
+            return SoccerAction(s.aller_vers_but_allie,None)
         
-        vecteur_acceleration = state.ball.position - state.player_state(id_team,id_player).position
-        vecteur_shoot = None
-        
-        if((state.player_state(id_team,id_player).position - state.ball.position).norm < PLAYER_RADIUS + BALL_RADIUS):
-            if((position_but-state.ball.position).norm < GAME_WIDTH/5):
-                vecteur_shoot = (position_but - state.ball.position)
-            else:
-                vecteur_shoot = (position_but-state.ball.position) #A changer
-
-        return SoccerAction(vecteur_acceleration,vecteur_shoot)
     
     
 # Create teams
 team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
 # Add players
-team1.add("Zlatan", Strategy())
-team1.add("Mbappé", Strategy())  
-team2.add("Static", GoStrategy())   
-team2.add("Static", GoStrategy())
+team1.add("Zlatan", GoStrategy())
+team1.add("Mbappé", GoStrategy())  
+team2.add("Static", Strategy())   
+team2.add("Static", Strategy())
 
 # Create a match
 simu = Simulation(team1, team2)
