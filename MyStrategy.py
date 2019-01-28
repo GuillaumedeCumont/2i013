@@ -1,14 +1,14 @@
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
-
+from Tools import *
    
     
-class RandomStrategy(Strategy):
+class GoStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self, "Random")
 
     def compute_strategy(self, state, id_team, id_player):
-        
+        s = SuperState(state, id_team, id_player)
         if(id_team == 2):
             position_but = Vector2D(0,GAME_HEIGHT/2.)
         if(id_team == 1):
@@ -22,6 +22,7 @@ class RandomStrategy(Strategy):
                 vecteur_shoot = (position_but - state.ball.position)
             else:
                 vecteur_shoot = (position_but-state.ball.position) #A changer
+
         return SoccerAction(vecteur_acceleration,vecteur_shoot)
     
     
@@ -29,10 +30,10 @@ class RandomStrategy(Strategy):
 team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
 # Add players
-team1.add("Zlatan", RandomStrategy())
-team1.add("Mbappé", RandomStrategy())  
-team2.add("Static", RandomStrategy())   
-team2.add("Static", RandomStrategy())
+team1.add("Zlatan", Strategy())
+team1.add("Mbappé", Strategy())  
+team2.add("Static", GoStrategy())   
+team2.add("Static", GoStrategy())
 
 # Create a match
 simu = Simulation(team1, team2)
