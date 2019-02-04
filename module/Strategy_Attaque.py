@@ -19,7 +19,7 @@ class Strategy_Attaque(Strategy):
         s = SuperState(state, id_team, id_player)
         
         if(id_player == 0):
-            allier_plus_proche_du_ballon_y_va
+            if():
             
             
         if(id_player == 1):
