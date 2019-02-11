@@ -5,9 +5,10 @@ Created on Mon Jan 28 13:43:02 2019
 
 @author: root
 """
+import random
 
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
-from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
+from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH, GAME_GOAL_HEIGHT
 
 
 class SuperState(object):
@@ -15,7 +16,9 @@ class SuperState(object):
         self.state = state
         self.id_team = id_team
         self.id_player = id_player
-        
+    
+    """Tout ce qui est relatif a la position"""
+    
     @property
     def ball(self):
         return self.state.ball.position
@@ -31,9 +34,9 @@ class SuperState(object):
     @property
     def but(self):
         if(self.id_team == 2):
-            position_but = Vector2D(0,GAME_HEIGHT/2.)
+            position_but = Vector2D(0,(GAME_HEIGHT/2.)+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2))
         elif(self.id_team == 1):
-            position_but = Vector2D(GAME_WIDTH,GAME_HEIGHT/2.)
+            position_but = Vector2D(GAME_WIDTH,(GAME_HEIGHT/2.)+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2))
         return position_but
     
     @property
@@ -93,9 +96,9 @@ class SuperState(object):
     @property
     def but_allie(self):
         if(self.id_team == 1):
-            position_but = Vector2D(0,GAME_HEIGHT/2.)
+            position_but = Vector2D(10,GAME_HEIGHT/2.)
         elif(self.id_team == 2):
-            position_but = Vector2D(GAME_WIDTH,GAME_HEIGHT/2.)
+            position_but = Vector2D(GAME_WIDTH-10,GAME_HEIGHT/2.)
         return position_but
     
     @property
@@ -111,59 +114,7 @@ class SuperState(object):
         """distance du but
             utile pour augmenter sa puissance si proche du but"""
         return (self.but-self.player).norm
-    
-    def aller_vers(self, Vecteur):
-        if((Vecteur - self.player).norm < PLAYER_RADIUS):
-            return None
-        return (Vecteur - self.player).normalize()
-    
-    @property
-    def aller_vers_ballon(self):
-        return self.aller_vers(self.ball)
-    
-    @property
-    def aller_vers_anticiper_ballon(self):
-        return self.aller_vers(self.state.ball.position + 5*self.state.ball.vitesse)
-    
-    @property
-    def aller_vers_but_allie(self):
-        return self.aller_vers(self.but_allie)
-    @property
-    def aller_vers_but_ennemi(self):
-        return self.aller_vers(self.but_ennemi)
-    
-    @property
-    def tire_au_but_si_peut_tirer(self):
-        """Tire uniquement si il est à coté du ballon"""
-        vecteur_shoot = None
-        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.but-self.ball).normalize())
-        return vecteur_shoot
-    
-    @property
-    def tire_au_but_si_peut_tirer_violent(self):
-        """Tire fort uniquement si il est a côté du ballon"""
-        vecteur_shoot = None
-        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.but-self.ball).normalize())*1000
-        return vecteur_shoot
-    
-    @property
-    def passe_joueur_allier_forte(self):
-        """Tire fort uniquement si il est a côté du ballon a son allier"""
-        vecteur_shoot = None
-        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())*1000
-        return vecteur_shoot
-    
-    @property
-    def passe_joueur_allier_faible(self):
-        """Tire fort uniquement si il est a côté du ballon a son allier"""
-        vecteur_shoot = None
-        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())
-        return vecteur_shoot
-    
+            
     @property
     def liste_joueur(self):
         return self.state.players
@@ -240,12 +191,17 @@ class SuperState(object):
             if((self.player-i).norm < minimum):
                 minimum = (self.player-i).norm
                 position = i
-        return position 
+        return position
+    
+    @property
+    def distance_entre_joueur_allier_proche(self):
+        """renvoie la distance entre self joueur et son ami le plus proche"""
+        return self.player.distance(self.position_joueur_allier_le_plus_proche)
     
     @property
     def tout_le_monde_est_sur_le_ballon(self):
         if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-            if((self.joueur_ennemi_le_plus_proche - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if((self.joueur_ennemi_le_plus_proche - self.ball).norm < 3*(PLAYER_RADIUS + BALL_RADIUS)):
                 return True
         return False
     
@@ -260,11 +216,89 @@ class SuperState(object):
     @property
     def allier_plus_proche_du_ballon_y_va(self):
         return self.aller_vers_anticiper_ballon
-        
-        
-        
-        
-        
-        
+    
+    """
+    @property
+    def liste_opposants(self):
+        return [self.state.player_state(id_team, id_player).position for (id_team,id_player) in self.state.players if id_team != self.id_team]
+    @property
+    def opposant_plus_proche(self):
+        return [min(self.player.distance(player), player) for player in self.liste_opposants]
+    """  
+    
+    """Tout ce qui est relatif à l'action"""
+    
+    def aller_vers(self, Vecteur):
+        if((Vecteur - self.player).norm < PLAYER_RADIUS):
+            return None
+        return (Vecteur - self.player).normalize()*1000
+
+    
+    @property
+    def aller_vers_ballon(self):
+        return self.aller_vers(self.ball)
+    
+    @property
+    def aller_vers_anticiper_ballon(self):
+        return (self.aller_vers(self.state.ball.position + 5*self.state.ball.vitesse))
+    
+    @property
+    def aller_vers_but_allie(self):
+        return self.aller_vers(self.but_allie)
+    @property
+    def aller_vers_but_ennemi(self):
+        return self.aller_vers(self.but_ennemi).normalize()*1000
+    
+    @property
+    def tire_au_but_si_peut_tirer(self):
+        """Tire uniquement si il est à coté du ballon"""
+        vecteur_shoot = None
+        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.but-self.ball).normalize())
+        return vecteur_shoot
+    
+    @property
+    def tire_au_but_si_peut_tirer_violent(self):
+        """Tire fort uniquement si il est a côté du ballon"""
+        vecteur_shoot = None
+        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.but-self.ball).normalize())*1000
+        return vecteur_shoot
+    
+    @property
+    def passe_joueur_allier_forte(self):
+        """Tire fort uniquement si il est a côté du ballon a son allier"""
+        vecteur_shoot = None
+        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())*1000
+        return vecteur_shoot
+    
+    @property
+    def passe_joueur_allier_faible(self):
+        """Tire fort uniquement si il est a côté du ballon a son allier"""
+        vecteur_shoot = None
+        if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())
+        return vecteur_shoot
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     

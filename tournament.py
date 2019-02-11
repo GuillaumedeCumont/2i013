@@ -6,23 +6,23 @@ Ceci est un script temporaire.
 """
 
 import module
+from module import GoStrategy, Strategy_Attaque
 
-from module import GoStrategy
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):
-    team = SoccerTeam(name="Maxime's Team")
+    team = SoccerTeam(name="Guillaume's Team")
     if nb_players == 1:
-        team.add("Attaquant", module.GoStrategy())
+        team.add("Attaquant", module.Strategy_Attaque())
     if nb_players == 2:
-        team.add("Attaquant", module.GoStrategy())
-        team.add("Defenseur", module.GoStrategy())
+        team.add("Attaquant", module.Strategy_Attaque())
+        team.add("Defenseur", module.Strategy_Attaque())
     return team
 
 if __name__ == '__main__':
     from soccersimulator import Simulation, show_simu
     team1 = get_team(1)
-    team2 = get_team(2)
+    team2 = get_team(1)
     
     simu = Simulation(team1,team2)
     show_simu(simu)
