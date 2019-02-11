@@ -8,4 +8,5 @@ Created on Mon Feb  4 16:14:14 2019
 
 from .MyStrategy import *
 from .Strategy_Attaque import *
+from .Strategy_Defense import *
 from .Tools import *

@@ -19,6 +19,19 @@ class Strategy_Defense(Strategy):
         s = SuperState(state, id_team, id_player)
     
         if(id_player == 0):
-            return None
+            if(s.distance_but_ennemi < GAME_HEIGHT/3.2):
+                return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer_violent)
+            else:
+                if s.tout_le_monde_est_sur_le_ballon:
+                    return SoccerAction(s.aller_vers_ballon,s.passe_joueur_allier_forte)
+                else:
+                    return SoccerAction(s.aller_vers_ballon,s.tire_au_but_si_peut_tirer)
+            
         if(id_player == 1):
-            return None
+            if(s.zone_allie):
+                return SoccerAction(s.aller_vers_anticiper_ballon, s.tire_au_but_si_peut_tirer_violent)
+            else:
+                if(s.distance_entre_joueur_allier_proche<1):
+                    return SoccerAction(None, None)
+                else:
+                    return SoccerAction(s.aller_vers_but_allie,None)

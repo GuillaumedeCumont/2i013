@@ -1,7 +1,6 @@
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
 from .Tools import *
-   
     
 class GoStrategy(Strategy):
     def __init__(self):
@@ -24,20 +23,3 @@ class GoStrategy(Strategy):
                 return SoccerAction(s.aller_vers_anticiper_ballon, s.tire_au_but_si_peut_tirer_violent)
             else:
                 return SoccerAction(s.aller_vers_but_allie,None)
-        
-    
-    """
-# Create teams
-team1 = SoccerTeam(name="Team 1")
-team2 = SoccerTeam(name="Team 2")
-# Add players
-team1.add("Mbappé", GoStrategy())
-team1.add("Ramos", GoStrategy())
-team2.add("Static", GoStrategy())   
-team2.add("Static", GoStrategy())
-
-# Create a match
-simu = Simulation(team1, team2)
-
-# Simulate and display the match
-show_simu(simu)"""

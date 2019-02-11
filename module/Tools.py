@@ -188,15 +188,20 @@ class SuperState(object):
         minimum = (self.player-self.liste_des_positions_joueurs_equipe_allie[0]).norm
         position = self.liste_des_positions_joueurs_equipe_allie[0]
         for i in self.liste_des_positions_joueurs_equipe_allie:
-            if((self.player-i).norm < minimum):
+            if((self.player-i).norm > minimum):
                 minimum = (self.player-i).norm
                 position = i
         return position
-    
+        
     @property
     def distance_entre_joueur_allier_proche(self):
         """renvoie la distance entre self joueur et son ami le plus proche"""
         return self.player.distance(self.position_joueur_allier_le_plus_proche)
+    
+    @property
+    def distance_entre_joueur_ennemi_proche(self):
+        """renvoie la distance entre self joueur et son ami le plus proche"""
+        return self.player.distance(self.joueur_ennemi_le_plus_proche)
     
     @property
     def tout_le_monde_est_sur_le_ballon(self):
@@ -216,7 +221,7 @@ class SuperState(object):
     @property
     def allier_plus_proche_du_ballon_y_va(self):
         return self.aller_vers_anticiper_ballon
-    
+        
     """
     @property
     def liste_opposants(self):
@@ -225,6 +230,13 @@ class SuperState(object):
     def opposant_plus_proche(self):
         return [min(self.player.distance(player), player) for player in self.liste_opposants]
     """  
+    
+    @property
+    def g_le_ballon(self):
+        """return bool"""
+        if((self.player -self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            return True
+        return False
     
     """Tout ce qui est relatif à l'action"""
     
@@ -270,7 +282,7 @@ class SuperState(object):
         """Tire fort uniquement si il est a côté du ballon a son allier"""
         vecteur_shoot = None
         if((self.player - self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())*1000
+                vecteur_shoot = ((self.position_joueur_allier_le_plus_proche-self.ball).normalize())*100
         return vecteur_shoot
     
     @property
