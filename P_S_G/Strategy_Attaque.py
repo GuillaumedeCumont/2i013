@@ -73,13 +73,16 @@ class Strategy_Attaque(Strategy):
                         else:
                             return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer)
             else:
-                if(s.zone_allie):
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
-                
-                if(s.distance_entre_joueur_allier_proche<20):
-                    return SoccerAction(None, None)
+                if s.zone_attaque:
+                    if(s.distance_entre_joueur_allier_proche<2):
+                        return SoccerAction(move.aller_vers_ballon, shoot.tire_au_but_si_peut_tirer)                    
+                    else:
+                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
                 else:
-                    return SoccerAction(move.aller_vers_but_allie,None)
+                    if s.si_ballon_proche_zone_def:
+                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
+                    else :
+                        return SoccerAction(move.aller_vers_but_allie,None)
                 
                 
                 

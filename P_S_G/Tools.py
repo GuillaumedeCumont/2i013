@@ -56,6 +56,12 @@ class SuperState(object):
                 return False
     
     @property
+    def zone_attaque(self):
+        if self.allie_2 or self.zone_ennemi:
+            return True
+        return False
+    
+    @property
     def zone_ennemi(self):
         """A TESTER"""
         return not(self.zone_allie) 
@@ -214,6 +220,12 @@ class SuperState(object):
         return False
     
     @property
+    def impasse(self):
+        if self.distance_entre_joueur_ennemi_proche<5:
+            return True
+        return False
+    
+    @property
     def allier_plus_proche_du_ballon(self):
         minimum = self.ball - self.liste_des_positions_joueurs_equipe_allie[0]
         for position in self.liste_des_positions_joueurs_equipe_allie:
@@ -236,5 +248,19 @@ class SuperState(object):
         """return bool"""
         if((self.player -self.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
             return True
+        return False
+    
+    @property
+    def si_ballon_proche_zone_def(self):
+        if((self.player - self.ball).norm <35):
+            return True
+        return False
+    
+    @property
+    def champ_libre(self):
+        if self.g_le_ballon:
+            for i in self.liste_des_positions_joueurs_ennemis:
+                if self.but_ennemi.distance(self.player) < self.but_ennemi.distance(i):
+                    return True
         return False
     

@@ -82,3 +82,8 @@ class Shoot(object):
     def __getattr__(self, name):
         return getattr(self.MyState, name)
     """
+    """
+    @property
+    def beau_degagement(self):
+    """
+    
