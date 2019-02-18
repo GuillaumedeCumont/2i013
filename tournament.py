@@ -5,24 +5,13 @@
 Ceci est un script temporaire.
 """
 
-import module
-from module import GoStrategy, Strategy_Attaque, Strategy_Defense
+import P_S_G
+from P_S_G import GoStrategy, Strategy_Attaque, Strategy_Defense
+from soccersimulator import Simulation, show_simu
+from P_S_G import get_team
 
-from soccersimulator import SoccerTeam
-
-def get_team(nb_players):
-    team = SoccerTeam(name="Guillaume's Team")
-    if nb_players == 1:
-        team.add("Benjamin Pavard", module.Strategy_Attaque_Solo())
-    if nb_players == 2:
-        team.add("Attaquant", module.Strategy_Attaque())
-        team.add("Defenseur", module.Strategy_Attaque())
-    return team
-
-if __name__ == '__main__':
-    from soccersimulator import Simulation, show_simu
-    team1 = get_team(2)
-    team2 = get_team(2)
+team1 = get_team(1)
+team2 = get_team(1)
     
-    simu = Simulation(team1,team2)
-    show_simu(simu)
+simu = Simulation(team1, team2)
+show_simu(simu)
