@@ -23,8 +23,8 @@ def get_team(nb_players):
     if nb_players == 1:
         team.add("Benjamin Pavard", P_S_G.Strategy_Attaque_Solo())
     if nb_players == 2:
-        team.add("Pavardoff", P_S_G.Strategy_Attaque())
-        team.add("def", P_S_G.Strategy_Attaque())
+        team.add("Pavardoff", P_S_G.Strategy_Defense())
+        team.add("def", P_S_G.Strategy_Defense())
     return team
 
 def get_team1(nb_players):
@@ -32,6 +32,6 @@ def get_team1(nb_players):
     if nb_players == 1:
         team.add("Benjamin Pavard", P_S_G.Strategy_Attaque_Solo())
     if nb_players == 2:
-        team.add("Pavarddef", P_S_G.Strategy_Defense())
-        team.add("Mbappé", P_S_G.Strategy_Defense())
+        team.add("Pavarddef", P_S_G.Strategy_Attaque())
+        team.add("Mbappé", P_S_G.Strategy_Attaque())
     return team
