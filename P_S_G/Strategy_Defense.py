@@ -32,7 +32,6 @@ class Strategy_Defense(Strategy):
         if(id_player == 1):
             
             if s.champ_libre:
-                print("PAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARD")
                 return SoccerAction(move.aller_vers_ballon, shoot.tire_au_but_si_peut_tirer)
             
             if(s.g_le_ballon):

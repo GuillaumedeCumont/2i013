@@ -6,7 +6,7 @@ Created on Mon Jan 28 13:43:02 2019
 @author: root
 """
 import random
-
+import math
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH, GAME_GOAL_HEIGHT
 
@@ -263,4 +263,33 @@ class SuperState(object):
                 if self.but_ennemi.distance(self.player) < self.but_ennemi.distance(i):
                     return True
         return False
+    
+    
+    """pour ma fonction degagement"""
+    @property
+    def angle_de_degagement(self, Vecteur_1, Vecteur_2):
+        return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm))*(180/math.pi)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     

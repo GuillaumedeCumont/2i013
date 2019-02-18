@@ -5,6 +5,7 @@ Created on Mon Feb 18 11:02:09 2019
 
 @author: 3535014
 """
+import math
 from .Tools import *
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH, GAME_GOAL_HEIGHT
@@ -82,8 +83,46 @@ class Shoot(object):
     def __getattr__(self, name):
         return getattr(self.MyState, name)
     """
-    """
     @property
-    def beau_degagement(self):
-    """
+    def degagement(self):
+        vecteur_shoot = None
+        if ((self.superstate.angle_de_degagement < 90) and (self.superstate.angle_de_degagement > -90)):
+            print("je suis là")
+            vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+10)
+        else:
+            print("je suis ici")
+            vecteur_shoot = self.tire_au_but_si_peut_tirer
+        return vecteur_shoot
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
