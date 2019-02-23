@@ -86,11 +86,10 @@ class Shoot(object):
     @property
     def degagement(self):
         vecteur_shoot = None
-        if ((self.superstate.angle_de_degagement < 90) and (self.superstate.angle_de_degagement > -90)):
-            print("je suis là")
-            vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+10)
+        if ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) < 1.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > -1.0)):
+            if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+10)
         else:
-            print("je suis ici")
             vecteur_shoot = self.tire_au_but_si_peut_tirer
         return vecteur_shoot
     

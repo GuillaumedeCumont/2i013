@@ -266,9 +266,9 @@ class SuperState(object):
     
     
     """pour ma fonction degagement"""
-    @property
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
         return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm))*(180/math.pi)
+    
     
     
     

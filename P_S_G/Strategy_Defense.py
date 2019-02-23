@@ -5,7 +5,7 @@ Created on Thu Feb  7 16:14:40 2019
 
 @author: root
 """
-
+import math
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
 from .Tools import *
@@ -26,7 +26,7 @@ class Defenseur(Strategy):
                 elif s.player.distance(s.ball) < s.joueur_ennemi_le_plus_proche.distance(s.ball):
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.degagement)
             
             while s.zone_ennemi:
                 if s.g_le_ballon and s.player.distance(s.but_ennemi) < s.joueur_ennemi_le_plus_proche.distance(s.but_allie):
@@ -35,6 +35,8 @@ class Defenseur(Strategy):
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:
                     return SoccerAction(move.aller_vers_but_allie, None)
+
+
 
 class Strategy_Defense(Strategy):
     def __init__(self):
