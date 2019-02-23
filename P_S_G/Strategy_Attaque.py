@@ -22,7 +22,7 @@ class Strategy_Attaque_Solo(Strategy):
         
         if(s.g_le_ballon):
             if(s.distance_entre_joueur_ennemi_proche<30 and s.distance_entre_joueur_ennemi_proche>15):
-                return SoccerAction(move.aller_vers_ballon,shoot.passe_joueur_allier_faible)
+                return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
             if(s.distance_but_ennemi < GAME_HEIGHT/3.2):
                 return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
             else:
@@ -31,16 +31,7 @@ class Strategy_Attaque_Solo(Strategy):
                 else:
                     return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer)
         else:
-            if(s.distance_but_ennemi < GAME_HEIGHT/3.2):
-                return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
-            else:
-                if s.distance_entre_joueur_allier_proche<10 and s.tout_le_monde_est_sur_le_ballon:
-                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
-                    
-                if s.tout_le_monde_est_sur_le_ballon:
-                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
-                else:
-                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer)
+            return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer)
 
     
 class Strategy_Attaque(Strategy):

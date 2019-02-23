@@ -30,7 +30,7 @@ def get_team(nb_players):
 def get_team1(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
-        team.add("Benjamin Pavard", P_S_G.Strategy_Attaque_Solo())
+        team.add("Benjamin Pavard", P_S_G.Defenseur())
     if nb_players == 2:
         team.add("Pavardoff", P_S_G.Strategy_Attaque())
         team.add("Mbappé", P_S_G.Strategy_Attaque())
