@@ -7,7 +7,7 @@ Ceci est un script temporaire.
 
 import P_S_G
 from soccersimulator import Simulation, show_simu
-from P_S_G import get_team, get_team1
+from P_S_G import get_team
 
 team1 = get_team(1)
 team2 = get_team(1)
