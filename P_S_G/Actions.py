@@ -8,8 +8,8 @@ Created on Mon Feb 18 11:02:09 2019
 import math
 from .Tools import *
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
-from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH, GAME_GOAL_HEIGHT
-
+from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH, GAME_GOAL_HEIGHT, maxPlayerAcceleration, maxPlayerShoot
+from random import randint
 
 class Move(object):
     def __init__(self, superstate):
@@ -20,7 +20,7 @@ class Move(object):
     def aller_vers(self, Vecteur):
         if((Vecteur - self.superstate.player).norm < PLAYER_RADIUS):
             return None
-        return (Vecteur - self.superstate.player).normalize()*1000
+        return (Vecteur - self.superstate.player).normalize()*maxPlayerAcceleration
 
     @property
     def aller_vers_ballon(self):
@@ -35,7 +35,7 @@ class Move(object):
         return self.aller_vers(self.superstate.but_allie)
     @property
     def aller_vers_but_ennemi(self):
-        return self.aller_vers(self.superstate.but_ennemi).normalize()*1000
+        return self.aller_vers(self.superstate.but_ennemi).normalize()*maxPlayerAcceleration
     @property
     def allier_plus_proche_du_ballon_y_va(self):
         return self.aller_vers_anticiper_ballon
@@ -53,15 +53,19 @@ class Shoot(object):
         """Tire uniquement si il est à coté du ballon"""
         vecteur_shoot = None
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize())
+                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize()*1.5)
         return vecteur_shoot
+    
+    @property
+    def tire_au_but_si_peut_tirer_2(self, strength):
+        return self.tire_au_but_si_peut_tirer*strength
     
     @property
     def tire_au_but_si_peut_tirer_violent(self):
         """Tire fort uniquement si il est a côté du ballon"""
         vecteur_shoot = None
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize())*1000
+                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize())*maxPlayerShoot
         return vecteur_shoot
     
     @property
@@ -86,9 +90,15 @@ class Shoot(object):
     @property
     def degagement(self):
         vecteur_shoot = None
-        if ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) < 1.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > -1.0)):
+        if ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) < 1.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > 0)):
             if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+10)
+                vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y-25)
+        elif ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) <= 0.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > -1.0)):
+            if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+25)
+        elif self.superstate.zone_allie:
+            if (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm < 6 and (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm > 2.5:
+                vecteur_shoot = self.tire_au_but_si_peut_tirer_violent
         else:
             vecteur_shoot = self.tire_au_but_si_peut_tirer
         return vecteur_shoot

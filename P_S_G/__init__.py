@@ -21,10 +21,10 @@ from soccersimulator import SoccerTeam
 def get_team(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
-        team.add("Mbappé", P_S_G.Defenseur())
+        team.add("Mbappé_perfide", P_S_G.Strategy_Attaque_Solo())
     if nb_players == 2:
-        team.add("Pavardef", P_S_G.Strategy_Defense())
-        team.add("def", P_S_G.Strategy_Defense())
+        team.add("Mbappé_moins_Perfide", P_S_G.Strategy_Attaque_Solo())
+        team.add("Mbappé_Perfide", P_S_G.Defenseur())
     return team
 
 def get_team1(nb_players):
@@ -32,6 +32,6 @@ def get_team1(nb_players):
     if nb_players == 1:
         team.add("Mbappé2", P_S_G.Defenseur())
     if nb_players == 2:
-        team.add("Pavardoff", P_S_G.Strategy_Attaque())
-        team.add("Mbappé", P_S_G.Strategy_Attaque())
+        team.add("memedef", P_S_G.Strategy_Defense())
+        team.add("memedef", P_S_G.Strategy_Defense())
     return team

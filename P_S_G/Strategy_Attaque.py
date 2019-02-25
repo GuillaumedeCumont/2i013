@@ -19,6 +19,11 @@ class Strategy_Attaque_Solo(Strategy):
         move = Move(s)
         shoot = Shoot(s)
         
+        if not s.g_le_ballon:
+            if (id_player == 1): #si un autre joueur de mon equipe a le ballon
+                return SoccerAction(None, None)
+            else:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
         
         if(s.g_le_ballon):
             if(s.distance_entre_joueur_ennemi_proche<30 and s.distance_entre_joueur_ennemi_proche>15):

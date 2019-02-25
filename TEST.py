@@ -6,12 +6,10 @@ Created on Mon Feb 18 18:47:15 2019
 @author: 3535014
 """
 
-import P_S_G
-from soccersimulator import Simulation, show_simu
-from P_S_G import get_team, get_team1
+from P_S_G.Strategy_Defense import Strategy_Defense
+from P_S_G.GoalSearch import *
 
-team1 = get_team(2)
-team2 = get_team1(2)
-    
-simu = Simulation(team1, team2)
-show_simu(simu)
+expe = GoalSearch(strategy = Strategy_Defense(), params={"strength": [4]})
+expe.start()
+print(expe.get_res())
+print(expe.get_best())
