@@ -30,6 +30,11 @@ class SuperState(object):
     def anticiper_ball_position(self):
         return self.state.ball.position + 5*self.state.ball.vitesse
     
+    """
+    @property
+    def anticiper_ball_positionv2(self, distance):
+    """
+    
     @property
     def player(self):
         return self.state.player_state(self.id_team, self.id_player).position
@@ -101,7 +106,14 @@ class SuperState(object):
         if(self.zone_ennemi_1):
             return False
         return True
-    
+    @property
+    def reste(self):
+        if(self.id_team == 2):
+            positiondef = Vector2D(140.0, self.anticiper_ball_position.y)
+        else:
+            positiondef = Vector2D(20.0, self.anticiper_ball_position.y)
+        return positiondef
+            
     @property
     def but_allie(self):
         if(self.id_team == 1):
@@ -241,7 +253,7 @@ class SuperState(object):
     @property
     def opposant_plus_proche(self):
         return [min(self.player.distance(player), player) for player in self.liste_opposants]
-    """  
+    """
     
     @property
     def g_le_ballon(self):

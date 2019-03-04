@@ -21,17 +21,22 @@ from soccersimulator import SoccerTeam
 def get_team(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
-        team.add("Mbappé_perfide", P_S_G.Strategy_Attaque_Solo())
+        team.add("defenseur/attaquant", P_S_G.Nouvelle_Strategie_Solo())
     if nb_players == 2:
-        team.add("Mbappé_moins_Perfide", P_S_G.Strategy_Attaque_Solo())
-        team.add("Mbappé_Perfide", P_S_G.Defenseur())
+        team.add("Attaquant", P_S_G.Strategy_Attaque_Solo())
+        team.add("Defenseur+attaquesurprise", P_S_G.Defenseur())
+    if nb_players == 4:
+        team.add("Goal", P_S_G.Defenseur())
+        team.add("Attaquant", P_S_G.Strategy_Attaque_Solo())
+        team.add("Defenseurs", P_S_G.Strategy_Defense())
+        team.add("Defenseurs", P_S_G.Strategy_Defense())        
     return team
 
 def get_team1(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
-        team.add("Mbappé2", P_S_G.Defenseur())
+        team.add("Attaquant", P_S_G.Strategy_Attaque_Solo())
     if nb_players == 2:
-        team.add("memedef", P_S_G.Strategy_Defense())
-        team.add("memedef", P_S_G.Strategy_Defense())
+        team.add("Goal", P_S_G.Strategy_GardienStock())
+        team.add("Milieu", P_S_G.Strategy_AttaquantStock())
     return team

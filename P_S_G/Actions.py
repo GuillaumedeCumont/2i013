@@ -39,6 +39,9 @@ class Move(object):
     @property
     def allier_plus_proche_du_ballon_y_va(self):
         return self.aller_vers_anticiper_ballon
+    @property
+    def allerdef(self):
+        return self.aller_vers(self.superstate.reste)
     """
     def __getattr__(self, name):
         return getattr(self.MyState, name)
@@ -92,15 +95,21 @@ class Shoot(object):
         vecteur_shoot = None
         if ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) < 1.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > 0)):
             if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                print("labas")
                 vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y-25)
         elif ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) <= 0.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > -1.0)):
             if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                print("la")
                 vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+25)
+        
         elif self.superstate.zone_allie:
             if (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm < 6 and (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm > 2.5:
-                vecteur_shoot = self.tire_au_but_si_peut_tirer_violent
+                print("ici")
+                vecteur_shoot = self.tire_au_but_si_peut_tirer_violent  
+
         else:
-            vecteur_shoot = self.tire_au_but_si_peut_tirer
+            print("parla")            
+            
         return vecteur_shoot
     
     

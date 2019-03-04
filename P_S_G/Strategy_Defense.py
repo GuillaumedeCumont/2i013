@@ -11,6 +11,33 @@ from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
 from .Tools import *
 from .Actions import Shoot, Move
 
+
+class Nouvelle_Strategie_Solo(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "nouvelleStrat")
+        self.stockage = None
+    def compute_strategy(self, state, id_team, id_player):
+            s = SuperState(state, id_team, id_player)
+            shoot = Shoot(s)
+            move = Move(s)
+            
+            if s.zone_allie:
+                if s.g_le_ballon and s.player.distance(s.but_ennemi) < s.joueur_ennemi_le_plus_proche.distance(s.but_allie):
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                elif s.player.distance(s.ball) < s.joueur_ennemi_le_plus_proche.distance(s.ball):
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                else:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.degagement)
+            
+            if s.zone_ennemi:
+                if s.g_le_ballon:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                elif s.player.distance(s.ball)+0.0000000001 < s.joueur_ennemi_le_plus_proche.distance(s.ball):
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer) 
+                else:
+                    return SoccerAction(move.allerdef, None)
+                           
+                
 class Defenseur(Strategy):
         def __init__(self):
             Strategy.__init__(self, "Defenseur")
@@ -34,6 +61,33 @@ class Defenseur(Strategy):
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:
                     return SoccerAction(move.aller_vers_but_allie, None)
+
+
+class Strategy_AttaquantStock(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "AttaquantStock")
+    def compute_strategy(self, state, id_team, id_player):
+        s = SuperState(state, id_team, id_player)
+        shoot = Shoot(s)
+        move = Move(s)
+        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+
+class Strategy_GardienStock(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "Gardienstock")
+    def compute_strategy(self, state, id_team, id_player):
+        s = SuperState(state, id_team, id_player)
+        shoot = Shoot(s)
+        move = Move(s)
+        
+        if s.zone_allie and ((s.ball - s.position_joueur_allier_le_plus_proche).norm < PLAYER_RADIUS + BALL_RADIUS):
+            return SoccerAction(move.allerdef, None)
+        
+        if s.zone_ennemi:
+            return SoccerAction(move.allerdef, None)
+        else:
+            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.degagement) 
+            """passe_joueur_allier_forte || DEGAGEMENT"""
 
 
 class Strategy_Defense(Strategy):
