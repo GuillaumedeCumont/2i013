@@ -18,7 +18,7 @@ from .Actions import *
 import P_S_G
 from soccersimulator import SoccerTeam
 
-def get_team(nb_players):
+def get_team1(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
         team.add("defenseur/attaquant", P_S_G.Nouvelle_Strategie_Solo())
@@ -32,7 +32,7 @@ def get_team(nb_players):
         team.add("Defenseurs", P_S_G.Strategy_Defense())        
     return team
 
-def get_team1(nb_players):
+def get_team(nb_players):
     team = SoccerTeam(name="pSG")
     if nb_players == 1:
         team.add("Attaquant", P_S_G.Strategy_Attaque_Solo())

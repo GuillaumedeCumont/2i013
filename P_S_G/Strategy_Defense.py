@@ -86,7 +86,7 @@ class Strategy_GardienStock(Strategy):
         if s.zone_ennemi:
             return SoccerAction(move.allerdef, None)
         else:
-            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.degagement) 
+            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_joueur_allier_forte) 
             """passe_joueur_allier_forte || DEGAGEMENT"""
 
 
