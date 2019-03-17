@@ -30,6 +30,23 @@ class SuperState(object):
     def anticiper_ball_position(self):
         return self.state.ball.position + 5*self.state.ball.vitesse
     
+    @property
+    def ball_targetzoneA(self):
+        if(self.ball.x > 42.75 and self.ball.x < 107.25 and self.ball.y <= 90 and self.ball.y > 55.8):
+            return True
+        return False
+    
+    @property
+    def ball_targetzoneB(self):
+        if(self.ball.x > 42.75 and self.ball.x < 107.25 and self.ball.y <= 34.2 and self.ball.y > 0):
+            return True
+        return False
+    
+    @property
+    def ball_targetzoneC(self):
+        if(self.ball.x > 52.75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
+            return True
+        return False            
     """
     @property
     def anticiper_ball_positionv2(self, distance):
@@ -60,6 +77,51 @@ class SuperState(object):
             else:
                 return False
     
+    @property
+    def zone_millieu_A(self):
+        if(self.state.player_state(self.id_team, self.id_player).position.x > 42.75 and self.state.player_state(self.id_team, self.id_player).position.x < 107.25):
+            if(self.state.player_state(self.id_team, self.id_player).position.y <= 90 and self.state.player_state(self.id_team, self.id_player).position.y > 55.8):
+                return True
+            return False
+        return False
+    
+    @property
+    def position_milieu_zone_Aretranche(self):
+        if self.id_team == 1:
+            return Vector2D(58,67.2)
+        if self.id_team == 2:
+            return Vector2D(92,67.2)
+    
+    @property
+    def zone_millieu_B(self):
+        if(self.state.player_state(self.id_team, self.id_player).position.x > 42.75 and self.state.player_state(self.id_team, self.id_player).position.x < 107.25):
+            if(self.state.player_state(self.id_team, self.id_player).position.y <= 34.2 and self.state.player_state(self.id_team, self.id_player).position.y > 0):
+                return True
+            return False
+        return False
+    
+    @property
+    def position_milieu_zone_Bretranche(self):
+        if self.id_team == 1:
+            return Vector2D(58,22.8)
+        if self.id_team == 2:
+            return Vector2D(92,22.8)
+    
+    @property
+    def zone_attaquant_C(self):
+        if(self.state.player_state(self.id_team, self.id_player).position.x > 52.75):
+            if(self.state.player_state(self.id_team, self.id_player).position.y >= 34.2 and self.state.player_state(self.id_team, self.id_player).position.y <= 55.8):
+                return True
+            return False
+        return False        
+
+    @property
+    def position_attaquant_zone_C_depart(self):
+        if self.id_team == 1:
+            return Vector2D(90,45)
+        if self.id_team == 2:
+            return Vector2D(60,45)
+        
     @property
     def zone_attaque(self):
         if self.allie_2 or self.zone_ennemi:
@@ -281,13 +343,32 @@ class SuperState(object):
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
         return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm))*(180/math.pi)
     
+        
+    #dans le cas ou 4 joueurs
     
-    
-    
-    
-    
-    
-    
+    @property
+    def position_attaquant(self):
+        for idteam, numplayer in self.liste_joueur_equipe_allie:
+            if self.id_team == 0:
+                return self.state.player_state(self.id_team, 3).position
+            if self.id_team == 1:
+                return self.state.player_state(self.id_team,3).position
+
+    @property 
+    def position_milieu_A(self):
+        for idteam, numplayer in self.liste_joueur_equipe_allie:
+            if self.id_team == 0:
+                return self.state.player_state(self.id_team, 1).position
+            if self.id_team == 1:
+                return self.state.player_state(self.id_team,1).position
+
+    @property 
+    def position_milieu_B(self):
+        for idteam, numplayer in self.liste_joueur_equipe_allie:
+            if self.id_team == 0:
+                return self.state.player_state(self.id_team, 2).position
+            if self.id_team == 1:
+                return self.state.player_state(self.id_team,2).position
     
     
     

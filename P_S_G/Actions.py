@@ -42,6 +42,15 @@ class Move(object):
     @property
     def allerdef(self):
         return self.aller_vers(self.superstate.reste)
+    @property
+    def allermillieuzoneAretranche(self):
+        return self.aller_vers(self.superstate.position_milieu_zone_Aretranche)
+    @property
+    def allermillieuzoneBretranche(self):
+        return self.aller_vers(self.superstate.position_milieu_zone_Bretranche)
+    @property
+    def allerattaquantzoneCdepart(self):
+        return self.aller_vers(self.superstate.position_attaquant_zone_C_depart)
     """
     def __getattr__(self, name):
         return getattr(self.MyState, name)
@@ -95,26 +104,57 @@ class Shoot(object):
         vecteur_shoot = None
         if ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) < 1.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > 0)):
             if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                print("labas")
                 vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y-25)
         elif ((self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) <= 0.0) and (self.superstate.angle_de_degagement(self.superstate.but_ennemi-self.superstate.player,self.superstate.but_ennemi-self.superstate.joueur_ennemi_le_plus_proche) > -1.0)):
             if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-                print("la")
                 vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y+25)
         
         elif self.superstate.zone_allie:
             if (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm < 6 and (self.superstate.joueur_ennemi_le_plus_proche-self.superstate.player).norm > 2.5:
-                print("ici")
                 vecteur_shoot = self.tire_au_but_si_peut_tirer_violent  
-
-        else:
-            print("parla")            
-            
         return vecteur_shoot
     
+    @property
+    def passe_attaquant_faible(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_attaquant) == Vector2D):
+                vecteur_shoot = ((self.superstate.position_attaquant-self.superstate.ball).normalize())
+        return vecteur_shoot
     
+    @property
+    def passe_attaquant_forte(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_attaquant) == Vector2D):
+                vecteur_shoot = (self.superstate.position_attaquant-self.superstate.ball).normalize()*6
+        return vecteur_shoot
+
+    @property
+    def passe_milieu_A_faible(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_milieu_A) == Vector2D):
+                vecteur_shoot = (self.superstate.position_milieu_A-self.superstate.ball).normalize()*2
+        return vecteur_shoot   
     
-    
+    @property
+    def passe_milieu_A_forte(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_milieu_A) == Vector2D):
+                vecteur_shoot = (self.superstate.position_milieu_A-self.superstate.ball).normalize()*6
+            else:
+                vecteur_shoot = self.superstate.position_milieu_zone_Aretranche.normalize()*6
+        return vecteur_shoot    
+
+    @property
+    def passe_milieu_B_forte(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_milieu_B) == Vector2D):
+                vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()*6
+        return vecteur_shoot    
     
     
     
