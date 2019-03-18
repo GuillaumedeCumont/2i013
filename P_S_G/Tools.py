@@ -44,8 +44,12 @@ class SuperState(object):
     
     @property
     def ball_targetzoneC(self):
-        if(self.ball.x > 52.75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
-            return True
+        if self.id_team == 1:
+            if(self.ball.x > 52.75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
+                return True
+        if self.id_team == 2:
+            if(self.ball.x < 97.25 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
+                return True            
         return False
 
     @property
@@ -147,7 +151,7 @@ class SuperState(object):
         if self.id_team == 1:
             return Vector2D(110,45) #x=90
         if self.id_team == 2:
-            return Vector2D(60,45)
+            return Vector2D(40,45)
         
     @property
     def zone_attaque(self):

@@ -45,7 +45,7 @@ class Strategy_4_joueurs(Strategy):
         if id_player == 3:                  
             if(s.g_le_ballon):
                 if (s.but_ennemi-s.player).norm<30:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
+                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
                 if(s.distance_entre_joueur_ennemi_proche<5):
                     return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
                 if s.champ_libre:
