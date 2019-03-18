@@ -18,25 +18,17 @@ class Strategy_4_joueurs(Strategy):
         shoot = Shoot(s)
         move = Move(s)
         
-        
+        print(s.position_milieu_A)
                 
         #programmation du goal
         if id_player == 0:
             if s.ball_targetgoal:
                 if s.g_le_ballon:
-                    if s.personne_entre_self_et_cible(s.position_milieu_A):
                         return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
-                    elif s.personne_entre_self_et_cible(s.position_milieu_B):
-                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)
-                    else:
-                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
-                else:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, None)
             if s.zone_ennemi:
-                return SoccerAction(move.allerdef, shoot.passe_milieu_A_forte)
+                return SoccerAction(move.allerdef, None)
             else:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
-
         #programmation de l'allié Zone A
         if id_player == 1:
             if s.ball_targetzoneA or s.ball_targetzoneD:

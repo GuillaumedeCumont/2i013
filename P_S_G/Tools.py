@@ -130,9 +130,9 @@ class SuperState(object):
     @property
     def position_milieu_zone_Bretranche(self):
         if self.id_team == 1:
-            return Vector2D(75,22.8) #58
+            return Vector2D(92,22.8) #58
         if self.id_team == 2:
-            return Vector2D(92,22.8)
+            return Vector2D(58,22.8)
     
     @property
     def zone_attaquant_C(self):
@@ -145,7 +145,7 @@ class SuperState(object):
     @property
     def position_attaquant_zone_C_depart(self):
         if self.id_team == 1:
-            return Vector2D(90,45)
+            return Vector2D(110,45) #x=90
         if self.id_team == 2:
             return Vector2D(60,45)
         
@@ -157,8 +157,7 @@ class SuperState(object):
     
     @property
     def zone_ennemi(self):
-        """A TESTER"""
-        return not(self.zone_allie) 
+        return not self.zone_allie 
     
     @property
     def allie_1(self):
@@ -374,32 +373,35 @@ class SuperState(object):
     
     """pour ma fonction degagement"""
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
-        return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm+0.0000001))*(180/math.pi)
+        return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm+1))*(180/math.pi)
         
     #dans le cas ou 4 joueurs
     
     @property
     def position_attaquant(self):
-        for idteam, numplayer in self.liste_joueur_equipe_allie:
-            if self.id_team == 0:
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:    
                 return self.state.player_state(self.id_team, 3).position
-            if self.id_team == 1:
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
                 return self.state.player_state(self.id_team,3).position
 
     @property 
     def position_milieu_A(self):
-        for idteam, numplayer in self.liste_joueur_equipe_allie:
-            if self.id_team == 0:
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:
                 return self.state.player_state(self.id_team, 1).position
-            if self.id_team == 1:
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
                 return self.state.player_state(self.id_team,1).position
 
     @property 
     def position_milieu_B(self):
-        for idteam, numplayer in self.liste_joueur_equipe_allie:
-            if self.id_team == 0:
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:
                 return self.state.player_state(self.id_team, 2).position
-            if self.id_team == 1:
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
                 return self.state.player_state(self.id_team,2).position
     
     
