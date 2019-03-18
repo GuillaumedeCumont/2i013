@@ -29,14 +29,14 @@ class Strategy_4_joueurs(Strategy):
 
         #programmation de l'allié Zone A
         if id_player == 1:
-            if s.ball_targetzoneA:
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_forte)
+            if s.ball_targetzoneA or s.ball_targetzoneD:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)
             if not s.ball_targetzoneA:
                 return SoccerAction(move.allermillieuzoneAretranche, None)
         
         #programmation de l'allié Zone B
         if id_player == 2:
-            if s.ball_targetzoneB:
+            if s.ball_targetzoneB or s.ball_targetzoneD:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_forte)
             if not s.ball_targetzoneB:
                 return SoccerAction(move.allermillieuzoneBretranche, None)

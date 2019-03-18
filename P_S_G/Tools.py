@@ -46,7 +46,16 @@ class SuperState(object):
     def ball_targetzoneC(self):
         if(self.ball.x > 52.75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
             return True
-        return False            
+        return False
+
+    @property
+    def ball_targetzoneD(self):
+        if(self.ball.x > 42.75 and self.ball.x < 75 and self.ball.y > 34.2 and self.ball.y < 55.8):
+            return True
+        return False
+    
+    
+     
     """
     @property
     def anticiper_ball_positionv2(self, distance):
@@ -342,7 +351,6 @@ class SuperState(object):
     """pour ma fonction degagement"""
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
         return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm))*(180/math.pi)
-    
         
     #dans le cas ou 4 joueurs
     

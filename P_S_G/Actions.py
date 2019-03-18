@@ -50,7 +50,8 @@ class Move(object):
         return self.aller_vers(self.superstate.position_milieu_zone_Bretranche)
     @property
     def allerattaquantzoneCdepart(self):
-        return self.aller_vers(self.superstate.position_attaquant_zone_C_depart)
+        return self.aller_vers(self.superstate.position_attaquant_zone_C_depart)   
+    
     """
     def __getattr__(self, name):
         return getattr(self.MyState, name)
@@ -154,7 +155,8 @@ class Shoot(object):
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
             if(type(self.superstate.position_milieu_B) == Vector2D):
                 vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()*6
-        return vecteur_shoot    
+        return vecteur_shoot
+
     
     
     
