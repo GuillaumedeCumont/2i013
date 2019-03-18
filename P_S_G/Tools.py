@@ -76,9 +76,9 @@ class SuperState(object):
     @property
     def but(self):
         if(self.id_team == 2):
-            position_but = Vector2D(0,(GAME_HEIGHT/2.)+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2))
+            position_but = Vector2D(0,(GAME_HEIGHT/2.)) #+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2)
         elif(self.id_team == 1):
-            position_but = Vector2D(GAME_WIDTH,(GAME_HEIGHT/2.)+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2))
+            position_but = Vector2D(GAME_WIDTH,(GAME_HEIGHT/2.)) #+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2)
         return position_but
     
     @property
