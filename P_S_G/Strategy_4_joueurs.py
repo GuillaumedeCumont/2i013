@@ -17,15 +17,25 @@ class Strategy_4_joueurs(Strategy):
         s = SuperState(state, id_team, id_player)
         shoot = Shoot(s)
         move = Move(s)
-            
+        
+        
+                
         #programmation du goal
         if id_player == 0:
-            if s.zone_allie and ((s.ball - s.position_joueur_allier_le_plus_proche).norm < PLAYER_RADIUS + BALL_RADIUS):
-                return SoccerAction(move.allerdef, shoot.passe_milieu_A_forte)
+            if s.ball_targetgoal:
+                if s.g_le_ballon:
+                    if s.personne_entre_self_et_cible(s.position_milieu_A):
+                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
+                    elif s.personne_entre_self_et_cible(s.position_milieu_B):
+                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)
+                    else:
+                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
+                else:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, None)
             if s.zone_ennemi:
                 return SoccerAction(move.allerdef, shoot.passe_milieu_A_forte)
             else:
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent) 
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
 
         #programmation de l'allié Zone A
         if id_player == 1:
@@ -37,23 +47,24 @@ class Strategy_4_joueurs(Strategy):
         #programmation de l'allié Zone B
         if id_player == 2:
             if s.ball_targetzoneB or s.ball_targetzoneD:
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_forte)
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_faiblouille)
             if not s.ball_targetzoneB:
                 return SoccerAction(move.allermillieuzoneBretranche, None)
         
         #programmation de l'attaquant
-        if id_player == 3:
-            if not s.g_le_ballon:
+        if id_player == 3:                  
+            if(s.g_le_ballon):
+                if(s.distance_entre_joueur_ennemi_proche<5):
+                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
+                if s.champ_libre:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                if s.tout_le_monde_est_sur_le_ballon:
+                    return SoccerAction(move.aller_vers_ballon,shoot.passe_milieu_A_forte)
+                else:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+    
+            else:
                 if s.ball_targetzoneC:
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:
                     return SoccerAction(move.allerattaquantzoneCdepart, None)
-            
-            if(s.g_le_ballon):
-                if s.tout_le_monde_est_sur_le_ballon:
-                    return SoccerAction(move.aller_vers_ballon,shoot.passe_milieu_A_forte)
-                if(s.distance_entre_joueur_ennemi_proche<30 and s.distance_entre_joueur_ennemi_proche>15):
-                    return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
-                else:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
-    

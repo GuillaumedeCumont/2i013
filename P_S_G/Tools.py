@@ -16,7 +16,7 @@ class SuperState(object):
         self.state = state
         self.id_team = id_team
         self.id_player = id_player
-        
+    
     def __getattr__(self, attr):
         return getattr(self.state, attr)
     
@@ -32,13 +32,13 @@ class SuperState(object):
     
     @property
     def ball_targetzoneA(self):
-        if(self.ball.x > 42.75 and self.ball.x < 107.25 and self.ball.y <= 90 and self.ball.y > 55.8):
+        if(self.ball.x > 40 and self.ball.x < 110 and self.ball.y <= 90 and self.ball.y > 55.8):
             return True
         return False
     
     @property
     def ball_targetzoneB(self):
-        if(self.ball.x > 42.75 and self.ball.x < 107.25 and self.ball.y <= 34.2 and self.ball.y > 0):
+        if(self.ball.x > 40 and self.ball.x < 110 and self.ball.y <= 34.2 and self.ball.y > 0):
             return True
         return False
     
@@ -54,7 +54,15 @@ class SuperState(object):
             return True
         return False
     
-    
+    @property
+    def ball_targetgoal(self):
+        if self.id_team==1:
+            if(self.ball.y > 30 and self.ball.y < 60 and self.ball.x < GAME_HEIGHT/2):
+                return True
+        if self.id_team==2:
+            if(self.ball.y > 30 and self.ball.y < 60 and self.ball.x < GAME_HEIGHT - GAME_HEIGHT/2):
+                return True
+        return False
      
     """
     @property
@@ -87,6 +95,16 @@ class SuperState(object):
                 return False
     
     @property
+    def zone_goal(self):
+        if self.id_team==1:
+            if(self.player.y > 30 and self.player.y < 60 and self.player.x < GAME_HEIGHT/4):
+                return True
+        if self.id_team==2:
+            if(self.player.y > 30 and self.player.y < 60 and self.player.x < GAME_HEIGHT - GAME_HEIGHT/4):
+                return True
+        return False
+    
+    @property
     def zone_millieu_A(self):
         if(self.state.player_state(self.id_team, self.id_player).position.x > 42.75 and self.state.player_state(self.id_team, self.id_player).position.x < 107.25):
             if(self.state.player_state(self.id_team, self.id_player).position.y <= 90 and self.state.player_state(self.id_team, self.id_player).position.y > 55.8):
@@ -112,7 +130,7 @@ class SuperState(object):
     @property
     def position_milieu_zone_Bretranche(self):
         if self.id_team == 1:
-            return Vector2D(58,22.8)
+            return Vector2D(75,22.8) #58
         if self.id_team == 2:
             return Vector2D(92,22.8)
     
@@ -316,11 +334,17 @@ class SuperState(object):
                 minimum = self.ball - self.liste_des_positions_joueurs_equipe_allie[position]
         return minimum
     
+    def personne_entre_self_et_cible(self, position_cible):
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if self.angle_de_degagement(self.player-position_cible, self.player-position) > 2:
+                return True
+            return False
         
     """
     @property
     def liste_opposants(self):
         return [self.state.player_state(id_team, id_player).position for (id_team,id_player) in self.state.players if id_team != self.id_team]
+    
     @property
     def opposant_plus_proche(self):
         return [min(self.player.distance(player), player) for player in self.liste_opposants]
@@ -350,7 +374,7 @@ class SuperState(object):
     
     """pour ma fonction degagement"""
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
-        return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm))*(180/math.pi)
+        return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm+0.0000001))*(180/math.pi)
         
     #dans le cas ou 4 joueurs
     

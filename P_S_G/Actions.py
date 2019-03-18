@@ -124,6 +124,14 @@ class Shoot(object):
         return vecteur_shoot
     
     @property
+    def passe_attaquant_faiblouille(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_attaquant) == Vector2D):
+                vecteur_shoot = ((self.superstate.position_attaquant-self.superstate.ball).normalize())*4
+        return vecteur_shoot
+    
+    @property
     def passe_attaquant_forte(self):
         vecteur_shoot = None
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
@@ -156,14 +164,15 @@ class Shoot(object):
             if(type(self.superstate.position_milieu_B) == Vector2D):
                 vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()*6
         return vecteur_shoot
+    
+    @property
+    def passe_milieu_B_faible(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_milieu_B) == Vector2D):
+                vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()
+        return vecteur_shoot
 
-    
-    
-    
-    
-    
-    
-    
     
     
     
