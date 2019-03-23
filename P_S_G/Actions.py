@@ -50,7 +50,10 @@ class Move(object):
         return self.aller_vers(self.superstate.position_milieu_zone_Bretranche)
     @property
     def allerattaquantzoneCdepart(self):
-        return self.aller_vers(self.superstate.position_attaquant_zone_C_depart)   
+        return self.aller_vers(self.superstate.position_attaquant_zone_C_depart)
+    @property
+    def allergoalzonegoaldepart(self):
+        return self.aller_vers(self.superstate.position_goal_depart)
     
     """
     def __getattr__(self, name):

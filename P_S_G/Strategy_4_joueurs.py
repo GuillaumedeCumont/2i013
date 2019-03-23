@@ -2,7 +2,7 @@
 """
 Created on Sun Mar 17 16:24:22 2019
 
-@author: gamer
+@author: root
 """
 
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
@@ -20,15 +20,24 @@ class Strategy_4_joueurs(Strategy):
                         
         #programmation du goal
         if id_player == 0:
-            if s.ball_targetgoal:
-                if s.g_le_ballon:
-                        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
-            if s.zone_ennemi:
-                return SoccerAction(move.allerdef, None)
-            else:
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
-        #programmation de l'allié Zone A
+            if s.suis_je_le_plus_proche_du_ballon:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)              
+            
+            elif s.je_suis_zone_goal_4_players:
+                if not s.g_le_ballon and s.zone_ennemi:
+                    return SoccerAction(move.allerdef, None)
+                else:
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)
+            
+            else: # je suis dans le cas ou je sors de ma zone
+                return SoccerAction(move.allergoalzonegoaldepart, None)
+            
+        #programmation de l'allié Zone 
         if id_player == 1:
+            
+            if s.suis_je_le_plus_proche_du_ballon:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)              
+            
             if s.ball_targetzoneA or s.ball_targetzoneD:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)
             if not s.ball_targetzoneA:
@@ -36,13 +45,19 @@ class Strategy_4_joueurs(Strategy):
         
         #programmation de l'allié Zone B
         if id_player == 2:
+
+            if s.suis_je_le_plus_proche_du_ballon:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_faiblouille)              
+            
             if s.ball_targetzoneB or s.ball_targetzoneD:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_faiblouille)
             if not s.ball_targetzoneB:
                 return SoccerAction(move.allermillieuzoneBretranche, None)
         
         #programmation de l'attaquant
-        if id_player == 3:                  
+        if id_player == 3:
+            if s.suis_je_le_plus_proche_du_ballon:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
             if(s.g_le_ballon):
                 if (s.but_ennemi-s.player).norm<30:
                     return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
@@ -54,8 +69,8 @@ class Strategy_4_joueurs(Strategy):
                     return SoccerAction(move.aller_vers_ballon,shoot.passe_milieu_A_forte)
                 else:
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
-    
-            else:
+            
+            if not s.g_le_ballon:
                 if s.ball_targetzoneC:
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:

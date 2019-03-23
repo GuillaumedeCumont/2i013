@@ -45,17 +45,21 @@ class SuperState(object):
     @property
     def ball_targetzoneC(self):
         if self.id_team == 1:
-            if(self.ball.x > 52.75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
+            if(self.ball.x > 75 and self.ball.y >= 34.2 and self.ball.y <= 55.8): #52.75 pour x
                 return True
         if self.id_team == 2:
-            if(self.ball.x < 97.25 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
+            if(self.ball.x < 75 and self.ball.y >= 34.2 and self.ball.y <= 55.8):
                 return True            
         return False
 
     @property
     def ball_targetzoneD(self):
-        if(self.ball.x > 42.75 and self.ball.x < 75 and self.ball.y > 34.2 and self.ball.y < 55.8):
-            return True
+        if self.id_team == 1:
+            if(self.ball.x > 42.75 and self.ball.x < 75 and self.ball.y > 34.2 and self.ball.y < 55.8):
+                return True
+        if self.id_team == 2:
+            if(self.ball.x <107.25 and self.ball.x > 75 and self.ball.y > 34.2 and self.ball.y < 55.8):
+                return True
         return False
     
     @property
@@ -84,6 +88,23 @@ class SuperState(object):
         elif(self.id_team == 1):
             position_but = Vector2D(GAME_WIDTH,(GAME_HEIGHT/2.)) #+random.randint(-GAME_GOAL_HEIGHT/2,GAME_GOAL_HEIGHT/2)
         return position_but
+    
+    @property
+    def je_suis_zone_goal_4_players(self):
+        if self.id_team==1:
+            if self.player.x < 40 and self.player.y < 65 and self.player.y > 25:
+                return True
+        if self.id_team==2:
+            if self.player.x > 110 and self.player.y < 65 and self.player.y > 25:
+                return True
+        return False
+    
+    @property
+    def position_goal_depart(self):
+        if self.id_team==1:
+            return Vector2D(20,45)
+        if self.id_team==2:
+            return Vector2D(130,45)
     
     @property
     def zone_allie(self):
@@ -149,9 +170,9 @@ class SuperState(object):
     @property
     def position_attaquant_zone_C_depart(self):
         if self.id_team == 1:
-            return Vector2D(110,45) #x=90
+            return Vector2D(115,45) #x=110
         if self.id_team == 2:
-            return Vector2D(40,45)
+            return Vector2D(35,45) # avant 40
         
     @property
     def zone_attaque(self):
@@ -374,6 +395,19 @@ class SuperState(object):
                     return True
         return False
     
+    @property
+    def suis_je_le_plus_proche_du_ballon(self):
+        minimum = self.player-self.ball
+        iterant = self.player-self.ball
+        for i in self.liste_des_positions_joueurs_equipe_allie:
+            for j in self.liste_des_positions_joueurs_ennemis:
+                if (i-self.ball).norm < minimum.norm:
+                    iterant = i
+                if (j-self.ball).norm < minimum.norm:
+                    iterant = j
+        if minimum==iterant:
+            return True
+        return False
     
     """pour ma fonction degagement"""
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
