@@ -170,9 +170,9 @@ class SuperState(object):
     @property
     def position_attaquant_zone_C_depart(self):
         if self.id_team == 1:
-            return Vector2D(115,45) #x=110
+            return Vector2D(118,45) #x=110/115
         if self.id_team == 2:
-            return Vector2D(35,45) # avant 40
+            return Vector2D(32,45) # avant 40/35
         
     @property
     def zone_attaque(self):

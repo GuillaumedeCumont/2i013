@@ -57,8 +57,8 @@ class Strategy_4_joueurs(Strategy):
         #programmation de l'attaquant
         if id_player == 3:
             
-            if s.suis_je_le_plus_proche_du_ballon:
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
+            if s.suis_je_le_plus_proche_du_ballon and not s.g_le_ballon:
+                return SoccerAction(move.aller_vers_anticiper_ballon, None)
             
             if(s.g_le_ballon):
                 if (s.but_ennemi-s.player).norm<30:
@@ -66,11 +66,11 @@ class Strategy_4_joueurs(Strategy):
                 if(s.distance_entre_joueur_ennemi_proche<5):
                     return SoccerAction(move.aller_vers_ballon,shoot.tire_au_but_si_peut_tirer_violent)
                 if s.champ_libre:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
                 if s.tout_le_monde_est_sur_le_ballon:
                     return SoccerAction(move.aller_vers_ballon,shoot.passe_milieu_A_forte)
                 else:
-                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+                    return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
             
             if not s.g_le_ballon:
                 if s.ball_targetzoneC:
