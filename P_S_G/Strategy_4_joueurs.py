@@ -13,6 +13,7 @@ from .Actions import Shoot, Move
 class Strategy_4_joueurs(Strategy):
     def __init__(self):
         Strategy.__init__(self, "strategy a 4")
+        
     def compute_strategy(self, state, id_team, id_player):
         s = SuperState(state, id_team, id_player)
         shoot = Shoot(s)
@@ -20,7 +21,7 @@ class Strategy_4_joueurs(Strategy):
                         
         #programmation du goal
         if id_player == 0:
-            if s.suis_je_le_plus_proche_du_ballon:
+            if s.suis_je_le_plus_proche_du_ballon: #modifié
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)              
             
             elif s.je_suis_zone_goal_4_players:

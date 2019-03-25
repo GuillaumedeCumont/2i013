@@ -30,7 +30,7 @@ def get_team(nb_players):
         team.add("Hugo Lloris", P_S_G.Strategy_4_joueurs())
         team.add("Cavani", P_S_G.Strategy_4_joueurs())
         team.add("Mbappé", P_S_G.Strategy_4_joueurs())
-        team.add("Zlatan", P_S_G.Strategy_4_joueurs())        
+        team.add("Zlatan", P_S_G.Strategy_4_joueurs())  
     return team
 
 def get_team1(nb_players):
