@@ -139,7 +139,7 @@ class Shoot(object):
         vecteur_shoot = None
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
             if(type(self.superstate.position_attaquant) == Vector2D):
-                vecteur_shoot = (self.superstate.position_attaquant-self.superstate.ball).normalize()*6
+                vecteur_shoot = (self.superstate.ball-self.superstate.position_attaquant).normalize()*6 # self.superstate.position_attaquant-self.superstate.ball
         return vecteur_shoot
 
     @property
