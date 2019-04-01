@@ -72,6 +72,15 @@ class SuperState(object):
                 return True
         return False
      
+    @property
+    def ball_target_goal_1_alerte_rouge(self):
+        if self.id_team==1:
+            if self.ball.x<40:
+                return True
+        if self.id_team==2:
+            if self.ball.x>110:
+                return True
+        return False
     """
     @property
     def anticiper_ball_positionv2(self, distance):
@@ -96,6 +105,16 @@ class SuperState(object):
                 return True
         if self.id_team==2:
             if self.player.x > 110 and self.player.y < 65 and self.player.y > 25:
+                return True
+        return False
+    
+    @property
+    def gros_malaise_proche_goal_4_players(self):
+        if self.id_team==1:
+            if self.ball.x < 20 and self.ball.y > 65 and self.ball.y < 25:
+                return True
+        if self.id_team==2:
+            if self.ball.x > 130 and self.ball.y > 65 and self.ball.y < 25:
                 return True
         return False
     
@@ -413,6 +432,7 @@ class SuperState(object):
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
         return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm+1))*(180/math.pi)
         
+    #############################################################################################################################
     #dans le cas ou 4 joueurs
     
     @property

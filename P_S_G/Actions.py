@@ -63,7 +63,15 @@ class Move(object):
 class Shoot(object):
     def __init__(self, superstate):
         self.superstate = superstate
-        
+    
+    @property
+    def tire_au_but_precision_chirurgicale_attaquant(self):
+        #modifier en fonction de la distance
+        #en fonction des positions joueurennemis
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize()*1.5)
+        return vecteur_shoot
+    
     @property
     def tire_au_but_si_peut_tirer(self):
         """Tire uniquement si il est à coté du ballon"""

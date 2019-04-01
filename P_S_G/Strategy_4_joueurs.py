@@ -10,6 +10,8 @@ from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
 from .Tools import *
 from .Actions import Shoot, Move
 
+
+
 class Strategy_4_joueurs(Strategy):
     def __init__(self):
         Strategy.__init__(self, "strategy a 4")
@@ -20,7 +22,7 @@ class Strategy_4_joueurs(Strategy):
         move = Move(s)
                         
         #programmation du goal
-        if id_player == 0:
+        if id_player == 0:            
             if s.suis_je_le_plus_proche_du_ballon: #modifié
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)              
             
@@ -34,8 +36,7 @@ class Strategy_4_joueurs(Strategy):
                 return SoccerAction(move.allergoalzonegoaldepart, None)
             
         #programmation de l'allié Zone 
-        if id_player == 1:
-            
+        if id_player == 1:         
             if s.suis_je_le_plus_proche_du_ballon:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)              
             
@@ -78,3 +79,16 @@ class Strategy_4_joueurs(Strategy):
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
                 else:
                     return SoccerAction(move.allerattaquantzoneCdepart, None)
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
