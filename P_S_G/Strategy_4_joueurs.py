@@ -24,7 +24,14 @@ class Strategy_4_joueurs(Strategy):
         #programmation du goal
         if id_player == 0:            
             if s.suis_je_le_plus_proche_du_ballon: #modifié
-                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)              
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_A_forte)         
+            
+            
+            ################################################
+            #if s.si_un_joueur_ennemi_a_ballon and (s.allie_1 or s.allie_2):
+            #    return SoccerAction(move.aller_vers_joueurennemiplusproche, shoot.passe_positionmoyenne_A_forte)
+            ################################################
+            
             
             elif s.je_suis_zone_goal_4_players:
                 if not s.g_le_ballon and s.zone_ennemi:
@@ -36,9 +43,14 @@ class Strategy_4_joueurs(Strategy):
                 return SoccerAction(move.allergoalzonegoaldepart, None)
             
         #programmation de l'allié Zone 
-        if id_player == 1:         
+        if id_player == 1:
             if s.suis_je_le_plus_proche_du_ballon:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)              
+            
+            ################################################
+            if s.si_un_joueur_ennemi_a_ballon:
+                return SoccerAction(move.aller_vers_joueurennemiplusproche, shoot.passe_positionmoyenne_B_forte)
+            ################################################
             
             if s.ball_targetzoneA or s.ball_targetzoneD:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_milieu_B_forte)
@@ -51,6 +63,11 @@ class Strategy_4_joueurs(Strategy):
             if s.suis_je_le_plus_proche_du_ballon:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_faiblouille)              
             
+            ################################################
+            if s.si_un_joueur_ennemi_a_ballon:
+                return SoccerAction(move.aller_vers_joueurennemiplusproche, shoot.passe_positionmoyenneattaquant_faiblouille)
+            ################################################
+            
             if s.ball_targetzoneB or s.ball_targetzoneD:
                 return SoccerAction(move.aller_vers_anticiper_ballon, shoot.passe_attaquant_faiblouille)
             if not s.ball_targetzoneB:
@@ -61,6 +78,11 @@ class Strategy_4_joueurs(Strategy):
             
             if s.suis_je_le_plus_proche_du_ballon and not s.g_le_ballon:
                 return SoccerAction(move.aller_vers_anticiper_ballon, None)
+            
+            ################################################
+            #if s.si_un_joueur_ennemi_a_ballon and s.zone_ennemi:
+            #    return SoccerAction(move.aller_vers_joueurennemiplusproche, shoot.tire_au_but_si_peut_tirer_violent)
+            ################################################
             
             if(s.g_le_ballon):
                 if (s.but_ennemi-s.player).norm<30:

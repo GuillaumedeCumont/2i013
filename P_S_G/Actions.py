@@ -55,6 +55,10 @@ class Move(object):
     def allergoalzonegoaldepart(self):
         return self.aller_vers(self.superstate.position_goal_depart)
     
+    @property
+    def aller_vers_joueurennemiplusproche(self):
+        return self.aller_vers(self.superstate.joueur_ennemi_le_plus_proche)
+    
     """
     def __getattr__(self, name):
         return getattr(self.MyState, name)
@@ -183,11 +187,41 @@ class Shoot(object):
             if(type(self.superstate.position_milieu_B) == Vector2D):
                 vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()
         return vecteur_shoot
+    
+    
+    ######################################################################################################
+    #nouvelles passes 
+    
+    @property
+    def passe_positionmoyenne_A_forte(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_moyenne_A_pourshoot) == Vector2D):
+                vecteur_shoot = (self.superstate.position_milieu_A-self.superstate.ball).normalize()*6
+            else:
+                vecteur_shoot = self.superstate.position_milieu_zone_Aretranche.normalize()*6
+        return vecteur_shoot    
 
+    @property
+    def passe_positionmoyenne_B_forte(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_moyenne_B_pourshoot) == Vector2D):
+                vecteur_shoot = (self.superstate.position_moyenne_B_pourshoot-self.superstate.ball).normalize()*6 #moyennedelaouildevraitetre
+            else:
+                vecteur_shoot = self.superstate.position_milieu_zone_Bretranche.normalize()*6 #positiondedepart
+        return vecteur_shoot
     
     
-    
-    
+    @property
+    def passe_positionmoyenneattaquant_faiblouille(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.position_moyenne_C_pourshoot) == Vector2D):
+                vecteur_shoot = ((self.superstate.ball-self.superstate.position_moyenne_C_pourshoot).normalize())*4
+            else:
+                vecteur_shoot = self.superstate.position_moyenne_C_pourshoot.normalize()*6
+        return vecteur_shoot
     
     
     

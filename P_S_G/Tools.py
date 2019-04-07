@@ -431,7 +431,22 @@ class SuperState(object):
     """pour ma fonction degagement"""
     def angle_de_degagement(self, Vecteur_1, Vecteur_2):
         return math.acos((Vecteur_1.dot(Vecteur_2))/(Vecteur_1.norm*Vecteur_2.norm+1))*(180/math.pi)
-        
+    
+   
+    @property
+    def si_joueur_ennemi_plus_proche_de_moi_plus_proche_ballon(self):
+        if (self.ball-self.joueur_ennemi_le_plus_proche).norm > (self.ball-self.player).norm:
+            return True
+        return False
+    
+    @property
+    def si_un_joueur_ennemi_a_ballon(self):
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if (self.ball-position).norm < (PLAYER_RADIUS + BALL_RADIUS)*5:
+                return True
+        return False
+    
+    
     #############################################################################################################################
     #dans le cas ou 4 joueurs
     
@@ -464,9 +479,18 @@ class SuperState(object):
     
     
     
+    ####################################################
+    #nouveau test
     
-    
-    
+    @property
+    def position_moyenne_A_pourshoot(self):
+        return (self.position_milieu_zone_Aretranche + self.position_milieu_A)/2
+    @property
+    def position_moyenne_B_pourshoot(self):
+        return (self.position_milieu_zone_Bretranche + self.position_milieu_B)/2
+    @property
+    def position_moyenne_C_pourshoot(self):
+        return (self.position_attaquant_zone_C_depart + self.position_attaquant)/2
     
     
     
