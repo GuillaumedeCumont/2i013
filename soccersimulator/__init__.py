@@ -3,6 +3,7 @@ from .utils import  Vector2D, MobileMixin
 from .strategies import Strategy,  KeyboardStrategy, DTreeStrategy
 from .mdpsoccer import SoccerAction, Ball, PlayerState,SoccerState
 from .mdpsoccer import  Player, SoccerTeam, Simulation
+from .volleyball import VolleySimulation, volley_show_simu
 from .matches import Score, SoccerTournament
 from .gui import SimuGUI, show_simu, show_state, pyg_start, pyg_stop, pyglet
 from .challenges import *

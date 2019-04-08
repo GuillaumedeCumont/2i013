@@ -4,6 +4,7 @@
 TEAM1_COLOR = [0.9, 0.1, 0.1]
 TEAM2_COLOR = [0.1, 0.1, 0.9]
 FIELD_COLOR = [0.3, 0.9, 0.3]
+VOLLEY_FIELD_COLOR = [1, 0.8, 0.4]
 BALL_COLOR = [0.4, 0.4, 0.4]
 LINE_COLOR = [1., 1., 1.]
 BG_COLOR = [0., 0., 0.]

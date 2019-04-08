@@ -1,0 +1,8 @@
+volleyball_question1
+J'ai pris la position du joueur ennemi, et j'avance vers le ballon, et je tire sur le joueur ennemi le plus proche pour l'entrainement.
+
+
+volleyball_question2
+J'ai accédé a la position du joueur, en fonction des coordonnées d'ordonné du joueur ennemi, si il est dans le haut de son terrain, je tire sur le coin bas du terrain, inversement s'il est en haut.
+
+volleyball_question3

@@ -33,12 +33,12 @@ class SimuGUI(pyglet.window.Window):
         pyglet.window.key.SPACE: lambda w: w._switch_manual_step(),
     }
 
-    def __init__(self,simu=None,width=1200,height=800):
+    def __init__(self, simu=None, width=1200, height=800, fps=None):
         pyglet.window.Window.__init__(self, width=width, height=height, resizable=True)
         self.set_size(width, height)
         self.focus()
         self.clear()
-        self._fps = FPS
+        self._fps = FPS if fps is None else fps
         self._sprites = dict()
         self._background = BackgroundSprite()
         self._state = None
@@ -264,8 +264,8 @@ class SimuGUI(pyglet.window.Window):
         pass
 
 
-def show_simu(simu):
-    gui = SimuGUI(simu)
+def show_simu(simu, fps=None):
+    gui = SimuGUI(simu, fps=fps)
     pyg_start()
 
 def show_state(state):

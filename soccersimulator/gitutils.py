@@ -21,6 +21,8 @@ Groupe = namedtuple("Groupe",["login","projet","module","noms"])
 def dl_from_github(groupe, path):
     path = os.path.abspath(path)
     if type(groupe)==list:
+        if os.path.exists(path):
+            os.system('rm -rf %s/*' % path)
         for g in groupe:
             if g.module:
                 dl_from_github(g,path)

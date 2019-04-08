@@ -76,8 +76,7 @@ class Strategy(object):
     def __repr__(self):
         return str(self.__class__).split(".")[-1]+": "+ self.__str__()
 
-class KeyboardStrategy(Strategy):
-
+class PermanentKeyboardStrategy(Strategy):
     def __init__(self,name="KBCommande",reset=False):
         super(KeyboardStrategy,self).__init__(name)
         self.dic_keys=dict()
@@ -111,6 +110,48 @@ class KeyboardStrategy(Strategy):
         if self.reset:
             self.states=[]
 
+class KeyboardStrategy(Strategy):
+    def __init__(self,name="KBCommande",reset=False):
+        super(KeyboardStrategy,self).__init__(name)
+        self.dic_keys=dict()
+        self.cur = None
+        self.cur_step = 0
+        self.states=[]
+        self.state=None
+        self.idt = 1
+        self.idp = 0
+        self.reset = reset
+
+    def add(self,key,strategy):
+        self.dic_keys[key]=strategy
+        if not self.cur:
+            self.cur = key
+            self.name = strategy.name
+
+    def compute_strategy(self,state,id_team,id_player):
+        self.state = state
+        self.idt = id_team
+        self.idp = id_player
+        if self.cur is None:
+            return SoccerAction()
+        else:
+            action = self.dic_keys[self.cur].compute_strategy(state,id_team,id_player)
+            self.cur_step += 1
+            if self.cur_step > 3:
+                self.cur_step = 0
+                self.cur = None
+            return action
+
+    def send_strategy(self,key):
+        if not self.state:
+            return
+        if key in self.dic_keys.keys():
+            self.cur=key
+            self.name = self.dic_keys[self.cur].name
+            self.states.append((self.state, (self.idt,self.idp,self.name)))
+    def begin_match(self,team1,team2,state):
+        if self.reset:
+            self.states=[]
 
 
 class DTreeStrategy(Strategy):

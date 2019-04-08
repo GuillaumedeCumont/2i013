@@ -59,6 +59,10 @@ class SoccerAction(object):
 class Ball(MobileMixin):
     def __init__(self,position=None,vitesse=None,**kwargs):
         super(Ball,self).__init__(position,vitesse,**kwargs)
+        self.previous_team_owner = None
+        self.team_owner = None
+        self.consecutive_hits = 0
+
     def next(self,sum_of_shoots):
         vitesse = self.vitesse.copy()
         vitesse.norm = self.vitesse.norm - settings.ballBrakeSquare * self.vitesse.norm ** 2 - settings.ballBrakeConstant * self.vitesse.norm
@@ -73,13 +77,33 @@ class Ball(MobileMixin):
             speed_tmp = Vector2D(speed_abs * u_s.x - speed_ortho * u_s.y, speed_abs * u_s.y + speed_ortho * u_s.x)
             speed_tmp += sum_of_shoots
             vitesse = speed_tmp
+            self._dec_hits()
         self.vitesse = vitesse.norm_max(settings.maxBallAcceleration).copy()
         self.position += self.vitesse
+
     def inside_goal(self):
         return (self.position.x < 0 or self.position.x > settings.GAME_WIDTH)\
                 and abs(self.position.y - (settings.GAME_HEIGHT / 2.)) < settings.GAME_GOAL_HEIGHT / 2.
+
+    def on_ground(self):
+        return self.vitesse.norm < settings.BALL_STOP
+
+    def off_the_field(self):
+        return (self.position.x < 0 or self.position.x > settings.GAME_WIDTH \
+                or self.position.y < 0 or self.position.y > settings.GAME_HEIGHT)
+
+    def _dec_hits(self):
+        if self.previous_team_owner is None or self.team_owner == self.previous_team_owner:
+            self.consecutive_hits += 1
+        else:
+            self.consecutive_hits = 0
+
+    def exceed_hits(self):
+        return self.consecutive_hits > settings.maxHits
+
     def __repr__(self):
         return "Ball(%s,%s)" % (self.position.__repr__(),self.vitesse.__repr__())
+
     def __str__(self):
         return "Ball: pos: %s, vit: %s" %(str(self.position),str(self.vitesse))
 
@@ -526,7 +550,8 @@ class Simulation(object):
             self.set_state(self.get_initial_state())
             self.listeners.begin_round(self.team1,self.team2,self.state.copy())
             self.states.append(self.state.copy())
-        self.listeners.begin_round(self.team1,self.team2,self.state.copy())
+        else:  # 03/18 2019
+            self.listeners.begin_round(self.team1,self.team2,self.state.copy())
     def end_round(self):
         self.listeners.end_round(self.team1, self.team2, self.state.copy())
         if not self.stop():

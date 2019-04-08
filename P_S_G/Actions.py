@@ -22,6 +22,21 @@ class Move(object):
             return None
         return (Vecteur - self.superstate.player).normalize()*maxPlayerAcceleration
 
+    ####################################
+    @property
+    def aller_vers_positionsolodepart(self):
+        return self.aller_vers(self.superstate.position_solo_depart)
+
+
+
+
+
+
+
+
+
+
+
     @property
     def aller_vers_ballon(self):
         return self.aller_vers(self.superstate.ball)
@@ -67,6 +82,31 @@ class Move(object):
 class Shoot(object):
     def __init__(self, superstate):
         self.superstate = superstate
+    
+    
+    @property
+    def passe_la_balle_a_ennemi(self):
+        vecteur_shoot=None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.superstate.joueur_ennemi_le_plus_proche-self.superstate.ball).normalize())*6
+        return vecteur_shoot    
+    
+    @property
+    def passe_la_balle_loin_ennemi(self):
+        vecteur_shoot=None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(GAME_HEIGHT-self.superstate.joueur_ennemi_le_plus_proche.y < 50):
+                vecteur_shoot = self.superstate.coinvolleybas
+            else:
+                vecteur_shoot = self.superstate.coinvolleyhaut
+        return vecteur_shoot
+    
+    
+    
+    
+    
+    
+    
     
     @property
     def tire_au_but_precision_chirurgicale_attaquant(self):

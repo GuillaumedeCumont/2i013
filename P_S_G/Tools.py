@@ -21,6 +21,43 @@ class SuperState(object):
         return getattr(self.state, attr)
     
     """Tout ce qui est relatif a la position"""
+    ################################"
+    #VOLLEYBALL
+
+    @property
+    def coinvolleybas(self):
+        if(self.id_team == 2):
+            coinbas = Vector2D(0,0) 
+        elif(self.id_team == 1):
+            coinbas = Vector2D(GAME_WIDTH,0) 
+        return coinbas            
+    
+    @property
+    def coinvolleyhaut(self):
+        if(self.id_team == 2):
+            coinhaut = Vector2D(0,GAME_HEIGHT) 
+        elif(self.id_team == 1):
+            coinhaut = Vector2D(GAME_WIDTH,GAME_HEIGHT)
+        return coinhaut     
+    
+    @property
+    def position_solo_depart(self):
+        if self.id_team == 1:
+            return Vector2D(GAME_WIDTH/5, GAME_HEIGHT/2)
+        if self.id_team == 2:
+            return Vector2D(GAME_WIDTH-GAME_WIDTH/5,GAME_HEIGHT/2)
+    
+    @property
+    def ballonsurmonterrain(self):
+        if self.id_team==1:
+            if self.ball.x < GAME_WIDTH/2:
+                return True
+        if self.id_team==2:
+            if self.ball.x > GAME_WIDTH/2:
+                return True
+        return False
+    
+    
     
     @property
     def ball(self):
