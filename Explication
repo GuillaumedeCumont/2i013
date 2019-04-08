@@ -3,6 +3,18 @@ J'ai pris la position du joueur ennemi, et j'avance vers le ballon, et je tire s
 
 
 volleyball_question2
-J'ai accédé a la position du joueur, en fonction des coordonnées d'ordonné du joueur ennemi, si il est dans le haut de son terrain, je tire sur le coin bas du terrain, inversement s'il est en haut.
+Je tire sur l'adversaire avec une force grande pour l'obliger a aller au fond du terrain et ainsi pouvoir l'éloigner.
+Je voulais viser les corners mais probleme de coordonnées.
 
 volleyball_question3
+L'attaquant fonce sur le ballon, et envoie la balle de l'autre côté du terrain
+Le defenseur, renvoie le ballon et va se replacer a sa position de depart. Position strategique pour qu'il soit bien placé pour chercher le ballon.
+
+volleyball_question4
+retourne a une position au milieu, pour mieux intercepter le ballon. Sinon quand peut tirer, va sur ballon et degage le ballon.
+mixte entre attaquant et defenseur.
+
+volleyball_question5
+deux joueurs avec deux positions initiales, vont se replacer quand le ballon n'est pas de leur coté.
+Celui qui est le plus proche du ballon l'envoie de l'autre coté du terrain, si un joueur est trop loin, il fait la passe a son coequipier qui l'envoie de l'autre côté.
+Je voulais perfectionner en mettant un joueur proche de la ligne pour envoyer tout le temps au fond du terrain adverse.

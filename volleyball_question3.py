@@ -11,7 +11,7 @@ from soccersimulator import VolleySimulation, volley_show_simu
 
 from P_S_G.Tools import *
 from P_S_G.Actions import Shoot, Move
-from P_S_G.Strategy_Volleyball import Defense
+from P_S_G.Strategy_Volleyball import Defense, Attaque
 
 
 
@@ -19,9 +19,9 @@ from P_S_G.Strategy_Volleyball import Defense
 team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
 
-# Add players
-team1.add("Player 1", Defense())  # Random strategy
-team2.add("Player 2", Defense())   # Random strategy
+# Add playe
+team1.add("Player 1", Defense())  
+team2.add("Player 2", Attaque())
 
 # Create a match
 simu = VolleySimulation(team1, team2)

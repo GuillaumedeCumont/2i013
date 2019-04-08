@@ -23,13 +23,43 @@ class SuperState(object):
     """Tout ce qui est relatif a la position"""
     ################################"
     #VOLLEYBALL
+    @property
+    def P1(self):
+        if self.id_team == 1:
+            return Vector2D(GAME_WIDTH/7,20)
+        if self.id_team==2:
+            return Vector2D(GAME_WIDTH-GAME_WIDTH/7, 20)
 
+    @property
+    def P2(self):
+        if self.id_team == 1:
+            return Vector2D(GAME_WIDTH/4,70)
+        if self.id_team==2:
+            return Vector2D(GAME_WIDTH-GAME_WIDTH/4, 70)    
+    
+    @property
+    def position_volley1(self):
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:    
+                return self.state.player_state(self.id_team, 0).position
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
+                return self.state.player_state(self.id_team,0).position
+    @property
+    def position_volley2(self):
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:    
+                return self.state.player_state(self.id_team, 1).position
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
+                return self.state.player_state(self.id_team,1).position    
+    
     @property
     def coinvolleybas(self):
         if(self.id_team == 2):
             coinbas = Vector2D(0,0) 
         elif(self.id_team == 1):
-            coinbas = Vector2D(GAME_WIDTH,0) 
+            coinbas = Vector2D(GAME_HEIGHT,0) 
         return coinbas            
     
     @property
@@ -38,24 +68,35 @@ class SuperState(object):
             coinhaut = Vector2D(0,GAME_HEIGHT) 
         elif(self.id_team == 1):
             coinhaut = Vector2D(GAME_WIDTH,GAME_HEIGHT)
-        return coinhaut     
+        return coinhaut 
+    
+    
+    @property
+    def position_tir(self):
+        if self.id_team == 1:
+            position = Vector2D(150, 10)
+        if self.id_team ==2:
+            position = Vector2D(89,14)
+        return position
+    
     
     @property
     def position_solo_depart(self):
         if self.id_team == 1:
-            return Vector2D(GAME_WIDTH/5, GAME_HEIGHT/2)
+            return Vector2D(GAME_WIDTH/6, GAME_HEIGHT/2)
         if self.id_team == 2:
-            return Vector2D(GAME_WIDTH-GAME_WIDTH/5,GAME_HEIGHT/2)
+            return Vector2D(GAME_WIDTH-GAME_WIDTH/6,GAME_HEIGHT/2)
     
     @property
     def ballonsurmonterrain(self):
         if self.id_team==1:
             if self.ball.x < GAME_WIDTH/2:
                 return True
+            return False
         if self.id_team==2:
             if self.ball.x > GAME_WIDTH/2:
                 return True
-        return False
+            return False
     
     
     

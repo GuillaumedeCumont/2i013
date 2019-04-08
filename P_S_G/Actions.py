@@ -26,15 +26,12 @@ class Move(object):
     @property
     def aller_vers_positionsolodepart(self):
         return self.aller_vers(self.superstate.position_solo_depart)
-
-
-
-
-
-
-
-
-
+    @property
+    def aller_vers_p1(self):
+        return self.aller_vers(self.superstate.P1)
+    @property
+    def aller_vers_p2(self):
+        return self.aller_vers(self.superstate.P2)
 
 
     @property
@@ -83,6 +80,19 @@ class Shoot(object):
     def __init__(self, superstate):
         self.superstate = superstate
     
+    @property
+    def passe_a_1(self):
+        vecteur_shoot=None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.superstate.ball-self.superstate.position_volley1).normalize())
+        return vecteur_shoot
+    
+    @property
+    def passe_a_2(self):
+        vecteur_shoot=None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.superstate.ball-self.superstate.position_volley2).normalize())
+        return vecteur_shoot
     
     @property
     def passe_la_balle_a_ennemi(self):
@@ -95,14 +105,31 @@ class Shoot(object):
     def passe_la_balle_loin_ennemi(self):
         vecteur_shoot=None
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
-            if(GAME_HEIGHT-self.superstate.joueur_ennemi_le_plus_proche.y < 50):
+            if(GAME_HEIGHT-self.superstate.joueur_ennemi_le_plus_proche.y < GAME_HEIGHT/2):
                 vecteur_shoot = self.superstate.coinvolleybas
             else:
                 vecteur_shoot = self.superstate.coinvolleyhaut
         return vecteur_shoot
     
+    @property
+    def passe_la_balleloinennemi(self):
+        vecteur_shoot=None
+        
+        if self.superstate.id_team==1:
+            if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                    vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y).normalize()*2
+        if self.superstate.id_team==2:
+            if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = Vector2D(self.superstate.joueur_ennemi_le_plus_proche.x, self.superstate.joueur_ennemi_le_plus_proche.y).normalize()*2
+
+        return vecteur_shoot    
     
-    
+    @property
+    def shoot_positiondite(self):
+        vecteur_shoot=None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            vecteur_shoot = ((self.superstate.ball-self.superstate.position_tir).normalize()*1.5)
+        return vecteur_shoot
     
     
     
