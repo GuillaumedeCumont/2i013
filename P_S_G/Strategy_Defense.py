@@ -11,6 +11,29 @@ from soccersimulator import PLAYER_RADIUS, BALL_RADIUS, GAME_HEIGHT, GAME_WIDTH
 from .Tools import *
 from .Actions import Shoot, Move
 
+class Strategy2v2Goal(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "strategy a 4")
+        
+    def compute_strategy(self, state, id_team, id_player):
+        s = SuperState(state, id_team, id_player)
+        shoot = Shoot(s)
+        move = Move(s)
+        
+        if s.suis_je_le_plus_proche_du_ballon: #modifié
+            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)         
+            
+    
+        elif s.je_suis_zone_goal_4_players:
+            if not s.g_le_ballon and s.zone_ennemi:
+                return SoccerAction(move.allerdef, None)
+            else:
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)
+            
+        else: # je suis dans le cas ou je sors de ma zone
+            return SoccerAction(move.allergoalzonegoaldepart, None)
+
+
 
 class Nouvelle_Strategie_Solo(Strategy):
     def __init__(self):
@@ -21,6 +44,9 @@ class Nouvelle_Strategie_Solo(Strategy):
             shoot = Shoot(s)
             move = Move(s)
             
+            if s.suis_je_le_plus_proche_du_ballon: #modifié
+                return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer_violent)         
+
             if s.zone_allie:
                 if s.g_le_ballon and s.player.distance(s.but_ennemi) < s.joueur_ennemi_le_plus_proche.distance(s.but_allie):
                     return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
@@ -70,7 +96,13 @@ class Strategy_AttaquantStock(Strategy):
         s = SuperState(state, id_team, id_player)
         shoot = Shoot(s)
         move = Move(s)
-        return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
+
+        if s.suis_je_le_plus_proche_du_ballon: #modifié
+            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)         
+        elif s.zone_allie:
+            return SoccerAction(move.aller_milieu, None)
+        elif s.zone_ennemi:
+            return SoccerAction(move.aller_vers_anticiper_ballon, shoot.tire_au_but_si_peut_tirer)
 
 class Strategy_GardienStock(Strategy):
     def __init__(self):

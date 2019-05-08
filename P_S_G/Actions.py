@@ -37,6 +37,9 @@ class Move(object):
     def aller_vers_but_ennemi(self):
         return self.aller_vers(self.superstate.but_ennemi).normalize()*maxPlayerAcceleration
     @property
+    def aller_milieu(self):
+        return (self.aller_vers_but_allie+self.aller_vers_but_ennemi)/2
+    @property
     def allier_plus_proche_du_ballon_y_va(self):
         return self.aller_vers_anticiper_ballon
     @property
@@ -83,6 +86,14 @@ class Shoot(object):
         if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
                 vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize()*1.5)
         return vecteur_shoot
+    
+    @property
+    def tire_au_but_si_peut_tirer_doucement(self):
+        """Tire uniquement si il est à coté du ballon"""
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+                vecteur_shoot = ((self.superstate.but-self.superstate.ball).normalize()*4.5)
+        return vecteur_shoot    
     
     @property
     def tire_au_but_si_peut_tirer_2(self, strength):
@@ -188,6 +199,7 @@ class Shoot(object):
                 vecteur_shoot = (self.superstate.position_milieu_B-self.superstate.ball).normalize()
         return vecteur_shoot
     
+
     
     ######################################################################################################
     #nouvelles passes 
@@ -223,11 +235,41 @@ class Shoot(object):
                 vecteur_shoot = self.superstate.position_moyenne_C_pourshoot.normalize()*6
         return vecteur_shoot
     
+    @property
+    def passesurquijetire_jesuisMA(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.surquijetire_jesuisMA) == Vector2D):
+                vecteur_shoot = ((self.superstate.ball-self.superstate.surquijetire_jesuisMA).normalize())*4
+            else:
+                vecteur_shoot = self.superstate.surquijetire_jesuisMA.normalize()*6
+        return vecteur_shoot
     
+    #######################################################################################################################
     
+    @property
+    def shootsurpasse_intelligente_MilieuB(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.passe_intelligente_MilieuB) == Vector2D):
+                vecteur_shoot = (self.superstate.passe_intelligente_MilieuB-self.superstate.ball).normalize()*4
+        return vecteur_shoot
     
+    @property
+    def shootsurpasse_intelligente_goal(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.passe_intelligente_goal) == Vector2D):
+                vecteur_shoot = (self.superstate.passe_intelligente_goal-self.superstate.ball).normalize()*6
+        return vecteur_shoot
     
-    
+    @property
+    def shootsurpasse_intelligente_MilieuA(self):
+        vecteur_shoot = None
+        if((self.superstate.player - self.superstate.ball).norm < PLAYER_RADIUS + BALL_RADIUS):
+            if(type(self.superstate.passe_intelligente_MilieuA) == Vector2D):
+                vecteur_shoot = (self.superstate.passe_intelligente_MilieuA-self.superstate.ball).normalize()*6
+        return vecteur_shoot
     
     
     

@@ -17,9 +17,6 @@ class SuperState(object):
         self.id_team = id_team
         self.id_player = id_player
     
-    def __getattr__(self, attr):
-        return getattr(self.state, attr)
-    
     """Tout ce qui est relatif a la position"""
     
     @property
@@ -174,7 +171,7 @@ class SuperState(object):
     @property
     def position_milieu_zone_Bretranche(self):
         if self.id_team == 1:
-            return Vector2D(92,22.8) #58
+            return Vector2D(92,22.8) #22.8
         if self.id_team == 2:
             return Vector2D(58,22.8)
     
@@ -372,16 +369,69 @@ class SuperState(object):
     @property
     def allier_plus_proche_du_ballon(self):
         minimum = self.ball - self.liste_des_positions_joueurs_equipe_allie[0]
+        pos = self.liste_des_positions_joueurs_equipe_allie[0]
         for position in self.liste_des_positions_joueurs_equipe_allie:
             if((self.liste_des_positions_joueurs_equipe_allie[position]).norm<minimum.norm):
                 minimum = self.ball - self.liste_des_positions_joueurs_equipe_allie[position]
-        return minimum
-    
+                pos = self.liste_des_positions_joueurs_equipe_allie[position]
+        return pos
+
     def personne_entre_self_et_cible(self, position_cible):
         for position in self.liste_des_positions_joueurs_ennemis:
             if self.angle_de_degagement(self.player-position_cible, self.player-position) > 2:
                 return True
             return False
+        
+    @property
+    def position_joueur_ennemi_plus_proche_de_attaquant(self):
+        minimum = self.position_attaquant - self.liste_des_positions_joueurs_ennemis[0]
+        pos = self.liste_des_positions_joueurs_ennemis[0]
+        i = 0
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if (self.liste_des_positions_joueurs_ennemis[i]).norm < minimum.norm:
+                minimum = self.position_attaquant - self.liste_des_positions_joueurs_ennemis[i]
+                pos = self.liste_des_positions_joueurs_ennemis[i]
+            i+=1
+        return pos
+        
+        
+    @property
+    def position_joueur_ennemi_plus_proche_de_milieuA(self):
+        minimum = self.position_milieu_A - self.liste_des_positions_joueurs_ennemis[0]
+        pos = self.liste_des_positions_joueurs_ennemis[0]
+        i = 0
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if (self.liste_des_positions_joueurs_ennemis[i]).norm < minimum.norm:
+                minimum = self.position_milieu_A - self.liste_des_positions_joueurs_ennemis[i]
+                pos = self.liste_des_positions_joueurs_ennemis[i]
+            i+=1
+        return pos
+  
+    @property
+    def position_joueur_ennemi_plus_proche_de_milieuB(self):
+        minimum = self.position_milieu_B - self.liste_des_positions_joueurs_ennemis[0]
+        pos = self.liste_des_positions_joueurs_ennemis[0]
+        i = 0
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if (self.liste_des_positions_joueurs_ennemis[i]).norm < minimum.norm:
+                minimum = self.position_milieu_B - self.liste_des_positions_joueurs_ennemis[i]
+                pos = self.liste_des_positions_joueurs_ennemis[i]
+            i+=1
+        return pos
+
+    @property
+    def position_joueur_ennemi_plus_proche_du_but_ennemi(self):
+        minimum = self.but_ennemi - self.liste_des_positions_joueurs_ennemis[0]
+        pos = self.liste_des_positions_joueurs_ennemis[0]
+        i = 0
+        for position in self.liste_des_positions_joueurs_ennemis:
+            if (self.liste_des_positions_joueurs_ennemis[i]).norm < minimum.norm:
+                minimum = self.but_ennemi - self.liste_des_positions_joueurs_ennemis[i]
+                pos = self.liste_des_positions_joueurs_ennemis[i]
+            i+=1
+        return pos
+
+        
         
     """
     @property
@@ -442,14 +492,23 @@ class SuperState(object):
     @property
     def si_un_joueur_ennemi_a_ballon(self):
         for position in self.liste_des_positions_joueurs_ennemis:
-            if (self.ball-position).norm < (PLAYER_RADIUS + BALL_RADIUS)*5:
-                return True
+            for pos_all in self.liste_des_positions_joueurs_equipe_allie:
+                if (self.ball-position).norm < (PLAYER_RADIUS + BALL_RADIUS)*5 and (self.ball-pos_all).norm > (PLAYER_RADIUS + BALL_RADIUS)*5:
+                    return True
         return False
     
     
     #############################################################################################################################
     #dans le cas ou 4 joueurs
     
+    @property
+    def position_goal(self):
+        if self.id_team == 1:
+            for idteam, numplayer in self.liste_joueur_equipe_allie:    
+                return self.state.player_state(self.id_team, 0).position
+        if self.id_team == 2:
+            for idteam, numplayer in self.liste_joueur_ennemis:
+                return self.state.player_state(self.id_team,0).position    
     @property
     def position_attaquant(self):
         if self.id_team == 1:
@@ -494,11 +553,67 @@ class SuperState(object):
     
     
     
+    ########################################################
+    def distance_pointA_droiteD(self, pointA, pointD1, pointD2):
+        X0 = pointA.x
+        Y0 = pointA.y
+        X1 = pointD1.x
+        Y1 = pointD1.y
+        X2 = pointD2.x
+        Y2 = pointD2.y
+        return abs(((Y1-Y2)*X0+(X2-X1)*Y0+(X1*Y2-X2*Y1))/(math.sqrt(((Y1-Y2)**2)+(X2-X1)**2)))
     
     
+
+    @property
+    def passe_intelligente_goal(self):
+       """A qui je donne entre defenseur, milieu, ou degagement intelligent"""
+              
+       if self.position_joueur_ennemi_plus_proche_de_milieuA.norm < 10 and\
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_de_milieuA,self.position_milieu_A, self.position_goal)<8 and\
+           (self.but_ennemi- self.position_goal).norm > 1.05*(self.but_ennemi - self.position_milieu_A).norm:
+           return self.position_milieu_A
+       elif self.position_joueur_ennemi_plus_proche_de_milieuB.norm < 10 and \
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_de_milieuB,self.position_milieu_B, self.position_goal)<8 and\
+           (self.but_ennemi- self.position_goal).norm > 1.05*(self.but_ennemi - self.position_milieu_B).norm:
+           return self.position_milieu_B
+       else:
+           return self.but_ennemi
+        
+    @property
+    def passe_intelligente_MilieuA(self):
+       """A qui je donne entre defenseur, milieu, ou degagement intelligent"""
+       #CAS MILIEU A
+       
+       if self.position_joueur_ennemi_plus_proche_de_attaquant.norm < 10 and\
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_de_attaquant,self.position_attaquant, self.position_milieu_A)<8 and\
+           (self.but_ennemi- self.position_milieu_A).norm > 1.05*(self.but_ennemi - self.position_attaquant).norm:
+           return self.position_attaquant
+       elif self.position_joueur_ennemi_plus_proche_de_milieuB.norm < 10 and \
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_de_milieuB,self.position_milieu_B, self.position_milieu_A)<8 and\
+           (self.but_ennemi- self.position_milieu_A).norm > 1.05*(self.but_ennemi - self.position_milieu_B).norm:
+           return self.position_milieu_B
+       else:
+           return self.position_attaquant
+    
+    @property
+    def passe_intelligente_MilieuB(self):
+       #CAS MILIEU A
+       
+       if self.position_joueur_ennemi_plus_proche_du_but_ennemi.norm < 10 and\
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_du_but_ennemi,self.position_milieu_B, self.but_ennemi)<8 and\
+           (self.but_ennemi- self.but_ennemi).norm > 1.05*(self.but_ennemi - self.position_milieu_B).norm:
+           return self.but_ennemi
+       elif self.position_joueur_ennemi_plus_proche_de_attaquant.norm < 10 and\
+           self.distance_pointA_droiteD(self.position_joueur_ennemi_plus_proche_de_attaquant,self.position_attaquant, self.position_milieu_B)<8 and\
+           (self.but_ennemi- self.position_milieu_B).norm > 1.05*(self.but_ennemi - self.position_attaquant).norm:
+           return self.position_attaquant
+       else:
+           return self.position_attaquant
     
     
-    
+    def __getattr__(self, attr):
+        return getattr(self.state, attr)
     
     
     

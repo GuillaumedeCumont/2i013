@@ -24,13 +24,13 @@ def get_team(nb_players):
     if nb_players == 1:
         team.add("defenseur/attaquant", P_S_G.Nouvelle_Strategie_Solo())
     if nb_players == 2:
-        team.add("Attaquant", P_S_G.Strategy_Attaque_Solo())
-        team.add("Defenseur+attaquesurprise", P_S_G.Defenseur())
+        team.add("attaquant_intelligent", P_S_G.Strategy_AttaquantStock())
+        team.add("défenseur", P_S_G.Strategy2v2Goal())
     if nb_players == 4:
-        team.add("Hugo Lloris", P_S_G.Strategy_4_joueurs())
-        team.add("Cavani", P_S_G.Strategy_4_joueurs())
-        team.add("Mbappé", P_S_G.Strategy_4_joueurs())
-        team.add("Zlatan", P_S_G.Strategy_4_joueurs())
+        team.add("Goal", P_S_G.Strategy_4_joueurs_goal())
+        team.add("MilieuA", P_S_G.Strategy_4_joueurs_defenseurA())
+        team.add("MilieuB", P_S_G.Strategy_4_joueurs_milieuB())
+        team.add("Attaquant", P_S_G.Strategy_4_joueurs_attaquant())  
     return team
 
 def get_team1(nb_players):
@@ -41,8 +41,8 @@ def get_team1(nb_players):
         team.add("Goal", P_S_G.Strategy_GardienStock())
         team.add("Milieu", P_S_G.Strategy_AttaquantStock())
     if nb_players == 4:
-        team.add("Goal", P_S_G.Strategy_Attaque_Solo())
-        team.add("Attaquant", P_S_G.Nouvelle_Strategie_Solo())
-        team.add("Defenseurs", P_S_G.Nouvelle_Strategie_Solo())
-        team.add("Defenseurs", P_S_G.Nouvelle_Strategie_Solo())                
+        team.add("Goal", P_S_G.Strategy_4_joueurs_goal())
+        team.add("Attaquant", P_S_G.Strategy_4_joueurs_defenseurA())
+        team.add("Defenseurs", P_S_G.Strategy_4_joueurs_milieuB())
+        team.add("Defenseurs", P_S_G.Strategy_4_joueurs_attaquant())                
     return team
