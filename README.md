@@ -14,7 +14,7 @@ This project develops first of all the strategies of the teams with 1,2 and 4 pl
 
 The soccer simulator, takes as input from the player only a vector. Two classes can return a vector. The Move class returns the player's movement in vector, and the Shoot class returns the player's shot. (*The player can only shoot if the ball is in his reach*)
 
-**At the stress level, the stronger the shot, the less accurate the shot.**
+**In terms of power, the stronger of the shot, the less accurate the shot.**
 
 ## 📕 Reinforcement
 These strategies have been improved via **reinforcement algorithms** (genetic algorithms and Q-learning)
