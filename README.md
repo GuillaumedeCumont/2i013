@@ -2,8 +2,8 @@
 ![built-with-love](img/made-with-python.svg?style=centerme)
 ![works-on-linux](img/makes-people-smile.svg?style=centerme)
 ![works-on-my-machine](img/uses-git.svg?style=centerme)
-![it-works-why.svg](img/powered-by-rascar.svg?style=centerme)
 ![compatibility-club-penguin.svg](img/compatibility-club-penguin.svg?style=centerme)
+![powered-by-rascar.svg](img/powered-by-rascar.svg?style=centerme)
 
 # SoccerSimulator (Sorbonne Université) - 2019
 
@@ -12,9 +12,9 @@ This repository contains a computer project of the Sorbonne University. It is th
 
 This project develops first of all the strategies of the teams with 1,2 and 4 players.  It also uses machine learning to evolve team strategies via reinforcement learning.
 
-Le simulateur de foot, prends en entrée du joueur uniquement un vecteur. Deux classes peuvent renvoyer un vecteur. La classe Move retournant en vecteur le déplacement du joueur, et la classe Shoot retournant le tir du joueur. (*Le joueur ne peux tirer que si le ballon est à sa portée*)
+The soccer simulator, takes as input from the player only a vector. Two classes can return a vector. The Move class returns the player's movement in vector, and the Shoot class returns the player's shot. (*The player can only shoot if the ball is in his reach*)
 
-**Au niveau de la contrainte, plus un tir est fort, moins le tir est précis.**
+**At the stress level, the stronger the shot, the less accurate the shot.**
 
 ## 📕 Reinforcement
 These strategies have been improved via **reinforcement algorithms** (genetic algorithms and Q-learning)
